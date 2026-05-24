@@ -1,0 +1,359 @@
+/* ==========================================================================
+   ОСНОВНЫЕ ПЕРЕМЕННЫЕ И ШРИФТЫ
+   ========================================================================== */
+:root {
+    --bg-dark: #0a0f1d;
+    --card-bg: rgba(255, 255, 255, 0.03);
+    --card-border: rgba(255, 255, 255, 0.07);
+    --gold: #dfa86c;
+    --gold-glow: rgba(223, 168, 108, 0.15);
+    --text-main: #f1f5f9;
+    --text-muted: #94a3b8;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Manrope', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: var(--text-main);
+    background-color: var(--bg-dark);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* Эффект глубокого неонового свечения на заднем плане */
+.glow-bg {
+    position: fixed;
+    top: -20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(14, 116, 144, 0.15) 0%, transparent 70%);
+    z-index: -1;
+    pointer-events: none;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* ==========================================================================
+   ШАПКА САЙТА (HERO BLOCK С ФОТОГРАФИЕЙ)
+   ========================================================================== */
+.hero {
+    padding: 70px 0 40px 0;
+}
+
+.hero-layout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    text-align: left;
+}
+
+.hero-avatar {
+    flex-shrink: 0;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    padding: 5px;
+    background: linear-gradient(135deg, var(--gold), transparent);
+    box-shadow: 0 0 30px var(--gold-glow);
+}
+
+.hero-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    background-color: #111625;
+}
+
+.hero-content {
+    max-width: 550px;
+}
+
+.hero h1 {
+    font-size: 2.8rem;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -1px;
+    margin: 12px 0;
+}
+
+.accent-text {
+    background: linear-gradient(to right, #ffffff, var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    font-weight: 300;
+}
+
+.badge {
+    display: inline-block;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 4px 14px;
+    border-radius: 30px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 0 15px var(--gold-glow);
+}
+
+/* ==========================================================================
+   СТРУКТУРНЫЕ СЕКЦИИ И СПИСКИ
+   ========================================================================== */
+.section-block {
+    margin-bottom: 50px;
+}
+
+.section-title {
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #ffffff;
+    border-bottom: 1px solid var(--card-border);
+    padding-bottom: 10px;
+}
+
+.about-desc {
+    font-size: 1.05rem;
+    color: var(--text-main);
+    margin-bottom: 15px;
+    font-weight: 300;
+}
+
+.features {
+    list-style: none;
+    padding-left: 5px;
+}
+
+.features li {
+    margin-bottom: 10px;
+    position: relative;
+    padding-left: 25px;
+    color: var(--text-muted);
+}
+
+.features li::before {
+    content: "✓";
+    color: var(--gold);
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+}
+
+/* ==========================================================================
+   БЛОК ОТЗЫВОВ И ССЫЛОК (GLASSMORPHISM)
+   ========================================================================== */
+.reviews-slider {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.glass-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 25px;
+    border-radius: 16px;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.glass-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(223, 168, 108, 0.3);
+}
+
+.review-text {
+    font-style: italic;
+    color: var(--text-main);
+    margin-bottom: 15px;
+    font-size: 0.95rem;
+}
+
+.review-author {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--gold);
+    font-weight: 600;
+    text-align: right;
+}
+
+.small-title {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin-bottom: 15px;
+}
+
+.chips-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.chip {
+    padding: 8px 18px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--card-border);
+    color: var(--text-main);
+    transition: all 0.2s;
+}
+
+.chip:hover {
+    border-color: #ffffff;
+    background: rgba(255,255,255,0.08);
+}
+
+/* Цвета интерактивного выделения для платформ при наведении */
+.chip.cian:hover { border-color: #04b3ff; color: #04b3ff; }
+.chip.avito:hover { border-color: #72bf44; color: #72bf44; }
+.chip.yandex:hover { border-color: #e62e00; color: #e62e00; }
+
+/* ==========================================================================
+   СЕТКА КОНТАКТОВ (КЛИКАБЕЛЬНЫЕ ПЛАШКИ)
+   ========================================================================== */
+.contacts-nav {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 15px;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    text-decoration: none;
+    color: var(--text-main);
+    transition: all 0.2s ease;
+}
+
+.nav-item:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: var(--gold);
+    transform: translateY(-2px);
+}
+
+.nav-item.telegram {
+    border-color: rgba(34, 158, 217, 0.2);
+}
+.nav-item.telegram:hover {
+    border-color: rgba(34, 158, 217, 0.6);
+    background: rgba(34, 158, 217, 0.05);
+}
+
+.nav-item .icon {
+    font-size: 1.5rem;
+}
+
+.nav-text strong {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+}
+
+.nav-text span {
+    font-size: 0.95rem;
+    font-weight: 300;
+}
+
+/* ==========================================================================
+   КОНТЕЙНЕР ЯНДЕКС.ФОРМЫ (БЕСШОВНЫЙ СРЕЗ)
+   ========================================================================== */
+/* Контейнер-маска, который жестко запирает форму в своих границах */
+.yandex-form-container {
+    width: 100%;
+    height: 300px;          /* Фиксированная высота рабочей зоны формы */
+    overflow: hidden;       /* Обрезает всё, что выходит за рамки 345px */
+    position: relative;
+    border-radius: 16px;
+    border: 1px solid var(--card-border);
+    background: #111625;   /* Цвет фона совпадает с темой Яндекса */
+}
+
+/* Фрейм формы, который мы искусственно делаем больше и сдвигаем нижнюю часть под обрезку */
+.yandex-form-container iframe {
+    display: block;
+    width: 100%;
+    height: 400px;       /* Общая высота фрейма с запасом */
+    border: none;
+    margin-bottom: -65px;   /* Сдвигает нижние 65 пикселей (где копирайт) глубоко под маску */
+}
+
+/* Корректировка обрезки для экранов мобильных телефонов */
+@media (max-width: 600px) {
+    .yandex-form-container { 
+        height: 300px;      /* На смартфонах поля Яндекса чуть выше, увеличиваем окно */
+    }
+    .yandex-form-container iframe { 
+        height: 450px; 
+    }
+}
+/* ==========================================================================
+   ПОДВАЛ САЙТА (FOOTER)
+   ========================================================================== */
+footer {
+    text-align: center;
+    padding: 50px 0 30px 0;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    border-top: 1px solid var(--card-border);
+}
+
+/* ==========================================================================
+   АДАПТИВНОСТЬ ДЛЯ ЭКРАНОВ СМАРТФОНОВ
+   ========================================================================== */
+@media (max-width: 600px) {
+    .hero-layout {
+        flex-direction: column; /* Фото встанет над текстом по центру */
+        text-align: center;
+        gap: 20px;
+    }
+    .hero h1 { 
+        font-size: 2.2rem; 
+    }
+    .hero-avatar { 
+        width: 140px; 
+        height: 140px; 
+    }
+    .reviews-slider { 
+        grid-template-columns: 1fr; 
+    }
+    .contacts-nav { 
+        grid-template-columns: 1fr; 
+    }
+    .yandex-form-container { 
+        height: 460px; /* На смартфонах поля Яндекса растягиваются, увеличиваем срез */
+    }
+    .yandex-form-container iframe { 
+        height: 515px; 
+    }
+}
