@@ -118,7 +118,7 @@ body {
    СТРУКТУРНЫЕ СЕКЦИИ И СПИСКИ
    ========================================================================== */
 .section-block {
-    margin-bottom: 50px;
+    margin-bottom: 20px;
 }
 
 .section-title {
@@ -358,4 +358,144 @@ footer {
     .yandex-form-container iframe { 
         height: 515px; 
     }
+}
+/* Блок отзывов */
+.reviews-section {
+    padding: 10px 10px;
+
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+.reviews-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.reviews-title {
+    text-align: center;
+    color:#ffffff;;
+    margin-bottom: 10px;
+    font-size: 28px;
+}
+
+.reviews-subtitle {
+    text-align: center;
+    color: #94a3b8;
+    margin-bottom: 40px;
+    font-size: 15px;
+}
+
+.reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+css/* Блок отзывов */
+.reviews-section {
+    padding: 50px 20px;
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+.reviews-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.reviews-title {
+    text-align: center;
+    color: white;
+    margin-bottom: 10px;
+    font-size: 28px;
+}
+
+.reviews-subtitle {
+    text-align: center;
+    color: #94a3b8;
+    margin-bottom: 40px;
+    font-size: 15px;
+}
+
+/* Контейнер для горизонтального скролла */
+.reviews-grid {
+    display: flex !important; /* Принудительно выстраиваем в линию */
+    flex-direction: row !important;
+    flex-wrap: nowrap !important; /* Запрещаем перенос карточек на новую строку */
+    gap: 20px;
+    overflow-x: auto !important; /* Включаем горизонтальную прокрутку */
+    overflow-y: hidden;
+    padding-bottom: 20px; /* Место для скроллбара */
+    scroll-snap-type: x mandatory; /* Прилипание карточек */
+    -webkit-overflow-scrolling: touch; /* Плавный скролл на смартфонах */
+}
+
+/* Кастомизация полосы прокрутки */
+.reviews-grid::-webkit-scrollbar {
+    height: 8px;
+}
+
+.reviews-grid::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+    border-radius: 10px;
+}
+ 
+.reviews-grid::-webkit-scrollbar-thumb {
+    background: #c1c1c1; 
+    border-radius: 10px;
+}
+
+.reviews-grid::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8; 
+}
+
+/* Карточка отзыва */
+.review-card {
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    
+    /* Фиксируем ширину карточки, чтобы она не сжималась */
+    flex: 0 0 300px !important; 
+    width: 300px !important;
+    scroll-snap-align: start;
+    box-sizing: border-box;
+}
+
+.review-stars {
+    color: #ffbe00;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.review-text {
+    color: #444;
+    font-size: 15px;
+    line-height: 1.6;
+    font-style: italic;
+    margin: 0 0 15px 0;
+    white-space: normal; /* Разрешаем тексту внутри карточки переноситься на новые строки */
+}
+
+.review-author {
+    color: #222;
+    display: block;
+    font-size: 16px;
+}
+
+.review-meta {
+    color: #888;
+    font-size: 13px;
+    display: block;
+    margin-bottom: 12px;
+}
+
+.review-link {
+    color: #007bc1;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
 }
