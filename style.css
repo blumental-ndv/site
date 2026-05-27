@@ -428,7 +428,7 @@ css/* Блок отзывов */
     scroll-snap-type: x mandatory; /* Прилипание карточек */
     -webkit-overflow-scrolling: touch; /* Плавный скролл на смартфонах */
 }
-
+d
 /* Кастомизация полосы прокрутки */
 .reviews-grid::-webkit-scrollbar {
     height: 8px;
