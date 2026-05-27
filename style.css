@@ -359,37 +359,6 @@ footer {
         height: 515px; 
     }
 }
-/* Блок отзывов */
-.reviews-section {
-    padding: 10px 10px;
-
-    font-family: system-ui, -apple-system, sans-serif;
-}
-
-.reviews-container {
-    max-width: 900px;
-    margin: 0 auto;
-}
-
-.reviews-title {
-    text-align: center;
-    color:#ffffff;;
-    margin-bottom: 10px;
-    font-size: 28px;
-}
-
-.reviews-subtitle {
-    text-align: center;
-    color: #94a3b8;
-    margin-bottom: 40px;
-    font-size: 15px;
-}
-
-.reviews-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
-}
 
 css/* Блок отзывов */
 .reviews-section {
@@ -400,6 +369,7 @@ css/* Блок отзывов */
 .reviews-container {
     max-width: 900px;
     margin: 0 auto;
+     margin-bottom: 20px;
 }
 
 .reviews-title {
