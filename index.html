@@ -27,8 +27,9 @@
                  <a href="tel:+79112119347" class="nav-item">
                     <span class="icon">📞</span>
                     <div class="nav-text">
-                        <strong>Телефон</strong>
-                        <span>+7 (911) 211-93-47</span>
+                        <span id="phone-container">
+                        <color-text="white"><button type="button" id="phone-btn" class="phone-link">Показать телефон</button>
+                        </color-text></span>
                     </div>
                 </a> 
         
@@ -204,5 +205,46 @@
         <p>&copy; 2026 ИП Блюменталь О. И. Все права защищены.</p>
     </footer>
 
+ <script>
+ 
+    document.addEventListener('DOMContentLoaded', () => {
+    const code = '+7';
+    const operator = '925'; // Замените на ваш код
+    const digits = '1234567'; // Замените на ваш номер
+    const formatted = `${code} (${operator}) ${digits.slice(0,3)}-${digits.slice(3,5)}-${digits.slice(5,7)}`;
+    const raw = code + operator + digits;
+
+    const btn = document.getElementById('phone-btn');
+    if (btn) {
+        btn.addEventListener('click', function handler(e) {
+            // Проверяем, является ли устройство мобильным
+            const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            
+            const container = document.getElementById('phone-container');
+            
+            if (isMobile) {
+                // Для мобильных: создаем ссылку и сразу кликаем для вызова
+                const link = document.createElement('a');
+                link.href = `tel:${raw}`;
+                link.className = 'phone-link';
+                link.innerText = formatted;
+                
+                container.innerHTML = '';
+                container.appendChild(link);
+                link.click();
+            } else {
+                // Для ПК: просто заменяем кнопку красивым белым текстом с номером (без вызова программ)
+                const textNode = document.createElement('span');
+                textNode.className = 'phone-link';
+                textNode.innerText = formatted;
+                
+                container.innerHTML = '';
+                container.appendChild(textNode);
+            }
+        });
+    }
+});
+
+</script>
 </body>
 </html>

@@ -468,3 +468,29 @@ css/* Блок отзывов */
     font-size: 13px;
     font-weight: 500;
 }
+
+
+/* Применяем жесткие стили к кнопке и к будущей ссылке */
+#phone-container .phone-link, 
+#phone-container a.phone-link {
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    
+    font-family: inherit !important;
+    font-size: inherit !important;
+    
+    /* Стили, которые вы просили */
+    font-weight: bold !important;       /* Жирный */
+    color: #ffffff !important;          /* Белый */
+    text-decoration: none !important;   /* Без подчеркивания */
+    
+    cursor: pointer !important;
+}
+
+/* На всякий случай отключаем изменение цвета при наведении */
+#phone-container .phone-link:hover,
+#phone-container a.phone-link:hover {
+    color: #ffffff !important;
+    text-decoration: none !important;
+}
