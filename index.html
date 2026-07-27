@@ -205,51 +205,7 @@
         <p>&copy; 2026 ИП Блюменталь О. И.</p>
     </footer>
 
- <script>
- 
-  document.addEventListener('DOMContentLoaded', () => {
-    const code = '+7';
-    const operator = '911'; // Замените на ваш код
-    const digits = '2119347'; // Замените на ваш номер
-    const formatted = `${code} (${operator}) ${digits.slice(0,3)}-${digits.slice(3,5)}-${digits.slice(5,7)}`;
-    const raw = code + operator + digits;
+<script src="phone.js"></script>
 
-    const btn = document.getElementById('phone-btn');
-    if (btn) {
-        btn.addEventListener('click', function(e) {
-            // Запрещаем стандартное поведение браузера на всякий случай
-            e.preventDefault(); 
-            
-            // Проверяем, мобильный ли это телефон
-            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-            const container = document.getElementById('phone-container');
-            
-            if (isMobile) {
-                // На смартфонах создаем кликабельную ссылку-вызов
-                const link = document.createElement('a');
-                link.href = `tel:${raw}`;
-                link.className = 'phone-link';
-                link.innerText = formatted;
-                
-                container.innerHTML = '';
-                container.appendChild(link);
-                
-                // Перенаправляем на системный звонильник смартфона
-                window.location.href = `tel:${raw}`;
-            } else {
-                // На ПК создаем простой ТЕКСТ. У него нет href, браузер ничего не откроет
-                const textNode = document.createElement('span');
-                textNode.className = 'phone-link';
-                textNode.innerText = formatted;
-                
-                container.innerHTML = '';
-                container.appendChild(textNode);
-            }
-        });
-    }
-});
-
-
-</script>
 </body>
 </html>
