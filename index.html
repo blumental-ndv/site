@@ -207,23 +207,25 @@
 
  <script>
  
-    document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('DOMContentLoaded', () => {
     const code = '+7';
-    const operator = '925'; // Замените на ваш код
-    const digits = '1234567'; // Замените на ваш номер
+    const operator = '911'; // Замените на ваш код
+    const digits = '2119347'; // Замените на ваш номер
     const formatted = `${code} (${operator}) ${digits.slice(0,3)}-${digits.slice(3,5)}-${digits.slice(5,7)}`;
     const raw = code + operator + digits;
 
     const btn = document.getElementById('phone-btn');
     if (btn) {
-        btn.addEventListener('click', function handler(e) {
-            // Проверяем, является ли устройство мобильным
-            const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        btn.addEventListener('click', function(e) {
+            // Запрещаем стандартное поведение браузера на всякий случай
+            e.preventDefault(); 
             
+            // Проверяем, мобильный ли это телефон
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
             const container = document.getElementById('phone-container');
             
             if (isMobile) {
-                // Для мобильных: создаем ссылку и сразу кликаем для вызова
+                // На смартфонах создаем кликабельную ссылку-вызов
                 const link = document.createElement('a');
                 link.href = `tel:${raw}`;
                 link.className = 'phone-link';
@@ -231,9 +233,11 @@
                 
                 container.innerHTML = '';
                 container.appendChild(link);
-                link.click();
+                
+                // Перенаправляем на системный звонильник смартфона
+                window.location.href = `tel:${raw}`;
             } else {
-                // Для ПК: просто заменяем кнопку красивым белым текстом с номером (без вызова программ)
+                // На ПК создаем простой ТЕКСТ. У него нет href, браузер ничего не откроет
                 const textNode = document.createElement('span');
                 textNode.className = 'phone-link';
                 textNode.innerText = formatted;
@@ -244,6 +248,7 @@
         });
     }
 });
+
 
 </script>
 </body>
