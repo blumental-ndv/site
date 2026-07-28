@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Реальный номер телефона эксперта
     const code = '+7';
-    const operator = '911'; // Изменено с 911 для соблюдения правил
+    const operator = '911'; 
     const digits = '2119347'; 
     const formatted = `${code} (${operator}) ${digits.slice(0,3)}-${digits.slice(3,5)}-${digits.slice(5,7)}`;
     const raw = code + operator + digits;
