@@ -269,6 +269,7 @@ body {
 
 .nav-item .icon {
     font-size: 1.5rem;
+    margin-right: 2px;
 }
 
 .nav-text strong {
@@ -502,3 +503,51 @@ css/* Блок отзывов */
     line-height: 1.4; /* Межстрочный интервал */
     opacity: 0.7;    /* Легкая прозрачность для мягкости */
 }
+
+
+/* Контейнер выравнивает иконку и кнопку/номер строго по центру */
+.phone-block {
+    display: inline-flex !important;
+    align-items: center !important; /* Центрирование по вертикали */
+    gap: 8px; /* Отступ между трубкой и текстом/номером */
+    cursor: pointer;
+}
+
+/* Защита от перехвата клика внутренними элементами */
+.phone-block .icon,
+.phone-block #phone-btn {
+    pointer-events: none;
+}
+
+/* Стили для кнопки до клика */
+#phone-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+}
+
+/* Делаем весь пункт меню кликабельным */
+.nav-item#phone-container {
+    cursor: pointer !important;
+    display: inline-flex; /* или flex, в зависимости от вашей текущей верстки */
+    align-items: center;  /* Идеальное выравнивание по центру вертикали */
+}
+
+/* Запрещаем иконке и кнопке перехватывать клик у главного div */
+.nav-item#phone-container * {
+    pointer-events: none !important;
+}
+
+/* Стили для текста номера после клика */
+.phone-number-text {
+    color: #ffffff !important;
+    font-weight: 700 !important; /* Делаем текст жирным */
+    display: inline-block;
+    line-height: 1;
+    margin-left: 8px; /* Отступ между трубкой и номером */
+}
+
