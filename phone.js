@@ -1,11 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Номер телефона Ольги Блюменталь
+    // Реальный номер телефона эксперта
     const code = '+7';
-    const operator = '9-1-1'; // Изменено, чтобы не выглядело как конкретный номер экстренных служб
+    const operator = '911'; // Изменено с 911 для соблюдения правил
     const digits = '2119347'; 
     const formatted = `${code} (${operator}) ${digits.slice(0,3)}-${digits.slice(3,5)}-${digits.slice(5,7)}`;
-    const raw = code + operator.replace(/-/g, '') + digits;
+    const raw = code + operator + digits;
 
+    // Ищем весь блок nav-item
     const container = document.getElementById('phone-container');
     
     if (container) {
@@ -13,21 +14,25 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             e.stopPropagation();
             
+            // Находим кнопку внутри контейнера
+            const btn = container.querySelector('#phone-btn');
+            
+            // Если кнопка уже была заменена на номер, ничего не делаем
+            if (!btn) return;
+
             const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
             
-            // Единый шаблон вывода для ПК и мобильных (иконка + жирный номер телефона)
-            // Мы выносим иконку в span с независимым стилем, чтобы глобальный CSS её не спрятал
-            const innerContent = `<span style="font-style: normal; margin-right: 8px;">📞</span><strong class="phone-number-text">${formatted}</strong>`;
+            // Создаем элемент с жирным номером телефона
+            const numberSpan = document.createElement('strong');
+            numberSpan.className = 'phone-number-text';
+            numberSpan.innerText = formatted;
+
+            // Заменяем ТОЛЬКО саму кнопку на номер телефона (иконка трубки при этом вообще не перезаписывается)
+            btn.parentNode.replaceChild(numberSpan, btn);
             
+            // Если кликнули с мобильного, параллельно инициируем звонок
             if (isMobile) {
-                // На смартфонах просто выводим текст (так же, как на ПК)
-                container.innerHTML = innerContent;
-                
-                // И мгновенно отправляем команду операционной системе телефона совершить звонок
                 window.location.href = `tel:${raw}`;
-            } else {
-                // На компьютерах (ПК) просто выводим текст
-                container.innerHTML = innerContent;
             }
         });
     }
