@@ -1,1 +1,44 @@
-const _0x46310a=_0x35ac;function _0x19b2(){const _0x291577=['26215YOPjwM','innerHTML','test','2119347','DOMContentLoaded','2Whafkg','<span\x20class=\x22icon\x22>📞</span><span\x20class=\x22phone-number-text\x22>','href','1798110ZIXNAE','772ESkiou','717XqwBcV','1749916EycZqV','appendChild','stopPropagation','slice','72180wZBpvZ','phone-container','248RxQqiR','getElementById','className','</span>','phone-number-link','5gKaGtc','1035402nwxNOy','addEventListener','911','tel:','60057bsfdRC','location','374uyzBeU'];_0x19b2=function(){return _0x291577;};return _0x19b2();}function _0x35ac(_0x2b35e6,_0x20611a){_0x2b35e6=_0x2b35e6-0x139;const _0x19b26a=_0x19b2();let _0x35ac0e=_0x19b26a[_0x2b35e6];return _0x35ac0e;}(function(_0x450f9b,_0x24a0b2){const _0x3cb86e=_0x35ac,_0x30958e=_0x450f9b();while(!![]){try{const _0x301c97=parseInt(_0x3cb86e(0x143))/0x1*(parseInt(_0x3cb86e(0x148))/0x2)+parseInt(_0x3cb86e(0x14d))/0x3*(parseInt(_0x3cb86e(0x14c))/0x4)+-parseInt(_0x3cb86e(0x13b))/0x5*(-parseInt(_0x3cb86e(0x13c))/0x6)+-parseInt(_0x3cb86e(0x14e))/0x7+-parseInt(_0x3cb86e(0x154))/0x8*(parseInt(_0x3cb86e(0x140))/0x9)+parseInt(_0x3cb86e(0x14b))/0xa+parseInt(_0x3cb86e(0x142))/0xb*(parseInt(_0x3cb86e(0x152))/0xc);if(_0x301c97===_0x24a0b2)break;else _0x30958e['push'](_0x30958e['shift']());}catch(_0x285d75){_0x30958e['push'](_0x30958e['shift']());}}}(_0x19b2,0x2a15b),document[_0x46310a(0x13d)](_0x46310a(0x147),()=>{const _0x3fa315=_0x46310a,_0x1cbe7b='+7',_0x3f16ab=_0x3fa315(0x13e),_0xf322a8=_0x3fa315(0x146),_0x56828a=_0x1cbe7b+'\x20('+_0x3f16ab+')\x20'+_0xf322a8[_0x3fa315(0x151)](0x0,0x3)+'-'+_0xf322a8[_0x3fa315(0x151)](0x3,0x5)+'-'+_0xf322a8['slice'](0x5,0x7),_0x2198c3=_0x1cbe7b+_0x3f16ab+_0xf322a8,_0x53d2c9=document[_0x3fa315(0x155)](_0x3fa315(0x153));_0x53d2c9&&_0x53d2c9[_0x3fa315(0x13d)]('click',function(_0x29e25a){const _0x1a1285=_0x3fa315;_0x29e25a['preventDefault'](),_0x29e25a[_0x1a1285(0x150)]();const _0x5cb2b2=/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i[_0x1a1285(0x145)](navigator['userAgent']);if(_0x5cb2b2){const _0x52b47c=document['createElement']('a');_0x52b47c['href']=_0x1a1285(0x13f)+_0x2198c3,_0x52b47c[_0x1a1285(0x156)]=_0x1a1285(0x13a),_0x52b47c[_0x1a1285(0x144)]=_0x1a1285(0x149)+_0x56828a+_0x1a1285(0x139),_0x53d2c9[_0x1a1285(0x144)]='',_0x53d2c9[_0x1a1285(0x14f)](_0x52b47c),window[_0x1a1285(0x141)][_0x1a1285(0x14a)]=_0x1a1285(0x13f)+_0x2198c3;}else _0x53d2c9[_0x1a1285(0x144)]=_0x1a1285(0x149)+_0x56828a+_0x1a1285(0x139);});}));
+document.addEventListener('DOMContentLoaded', () => {
+    // Номер телефона Ольги Блюменталь
+    const code = '+7';
+    const operator = '911'; 
+    const digits = '2119347'; 
+    const formatted = `${code} (${operator}) ${digits.slice(0,3)}-${digits.slice(3,5)}-${digits.slice(5,7)}`;
+    const raw = code + operator + digits;
+
+    const container = document.getElementById('phone-container');
+    
+    if (container) {
+        container.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            
+            // Чистый HTML-шаблон для вывода (иконка + жирный номер)
+            const innerContent = `<span class="icon">📞</span><strong class="phone-number-text">${formatted}</strong>`;
+            
+            if (isMobile) {
+                // На смартфонах создаем прямую ссылку для звонка
+                const link = document.createElement('a');
+                link.href = `tel:${raw}`;
+                // Применяем флекс-выравнивание прямо к ссылке, чтобы трубка стояла ровно по центру с номером
+                link.style.display = 'inline-flex';
+                link.style.alignItems = 'center';
+                link.style.textDecoration = 'none';
+                link.style.color = 'inherit';
+                link.innerHTML = innerContent;
+                
+                // Полностью очищаем div и вставляем ссылку с трубкой внутрь
+                container.innerHTML = '';
+                container.appendChild(link);
+                
+                // Запускаем системный вызов на телефоне
+                window.location.href = `tel:${raw}`;
+            } else {
+                // На ПК просто выводим иконку и номер напрямую в div
+                container.innerHTML = innerContent;
+            }
+        });
+    }
+});
