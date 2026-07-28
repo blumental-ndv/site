@@ -193,9 +193,22 @@ body {
     background: rgba(34, 158, 217, 0.05);
 }
 
+.nav-item.max {
+    border-color: rgba(139, 92, 220, 0.2);
+}
+.nav-item.max:hover {
+    border-color: rgba(139, 92, 220, 0.6);
+    background: rgba(139, 92, 220, 0.05);
+}
+
 .nav-item .icon {
     font-size: 1.5rem;
     margin-right: 2px;
+}
+
+.icon-svg {
+    display: inline-flex;
+    align-items: center;
 }
 
 .nav-text strong {
@@ -272,6 +285,9 @@ footer {
     .hero-avatar { 
         width: 180px; 
         height: 180px; 
+    }
+    .hero-actions {
+        justify-content: center;
     }
     .review-card {
         flex: 0 0 260px !important;
@@ -420,27 +436,37 @@ footer {
 }
 
 
-/* Применяем жесткие стили к кнопке и к будущей ссылке */
-#phone-container .phone-link, 
-#phone-container a.phone-link {
+/* Ряд быстрых действий в hero (телефон + telegram) */
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.hero-actions .nav-item {
+    flex: 0 0 auto;
+    padding: 14px 20px;
+}
+
+/* Применяем жесткие стили к тексту кнопок быстрых действий (телефон / telegram) */
+.action-text {
     background: none !important;
     border: none !important;
     padding: 0 !important;
-    
+
     font-family: inherit !important;
     font-size: inherit !important;
-    
-    /* Стили, которые вы просили */
-    font-weight: bold !important;       /* Жирный */
-    color: #ffffff !important;          /* Белый */
-    text-decoration: none !important;   /* Без подчеркивания */
-    
+
+    font-weight: bold !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
+
     cursor: pointer !important;
 }
 
 /* На всякий случай отключаем изменение цвета при наведении */
-#phone-container .phone-link:hover,
-#phone-container a.phone-link:hover {
+.action-text:hover {
     color: #ffffff !important;
     text-decoration: none !important;
 }
