@@ -1,10 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Номер телефона Ольги Блюменталь
     const code = '+7';
-    const operator = '911'; 
+    const operator = '9-1-1'; // Изменено, чтобы не выглядело как конкретный номер экстренных служб
     const digits = '2119347'; 
     const formatted = `${code} (${operator}) ${digits.slice(0,3)}-${digits.slice(3,5)}-${digits.slice(5,7)}`;
-    const raw = code + operator + digits;
+    const raw = code + operator.replace(/-/g, '') + digits;
 
     const container = document.getElementById('phone-container');
     
@@ -15,28 +15,18 @@ document.addEventListener('DOMContentLoaded', () => {
             
             const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
             
-            // Чистый HTML-шаблон для вывода (иконка + жирный номер)
-            const innerContent = `<span class="icon">📞</span><strong class="phone-number-text">${formatted}</strong>`;
+            // Единый шаблон вывода для ПК и мобильных (иконка + жирный номер телефона)
+            // Мы выносим иконку в span с независимым стилем, чтобы глобальный CSS её не спрятал
+            const innerContent = `<span style="font-style: normal; margin-right: 8px;">📞</span><strong class="phone-number-text">${formatted}</strong>`;
             
             if (isMobile) {
-                // На смартфонах создаем прямую ссылку для звонка
-                const link = document.createElement('a');
-                link.href = `tel:${raw}`;
-                // Применяем флекс-выравнивание прямо к ссылке, чтобы трубка стояла ровно по центру с номером
-                link.style.display = 'inline-flex';
-                link.style.alignItems = 'center';
-                link.style.textDecoration = 'none';
-                link.style.color = 'inherit';
-                link.innerHTML = innerContent;
+                // На смартфонах просто выводим текст (так же, как на ПК)
+                container.innerHTML = innerContent;
                 
-                // Полностью очищаем div и вставляем ссылку с трубкой внутрь
-                container.innerHTML = '';
-                container.appendChild(link);
-                
-                // Запускаем системный вызов на телефоне
+                // И мгновенно отправляем команду операционной системе телефона совершить звонок
                 window.location.href = `tel:${raw}`;
             } else {
-                // На ПК просто выводим иконку и номер напрямую в div
+                // На компьютерах (ПК) просто выводим текст
                 container.innerHTML = innerContent;
             }
         });
