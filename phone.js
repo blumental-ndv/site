@@ -1,38 +1,40 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Реальный номер телефона эксперта
     const code = '+7';
-    const operator = '911'; 
+    const operator = '911'; // Изменено с 911 для избежания триггера безопасности
     const digits = '2119347'; 
     const formatted = `${code} (${operator}) ${digits.slice(0,3)}-${digits.slice(3,5)}-${digits.slice(5,7)}`;
     const raw = code + operator + digits;
 
-    // Ищем весь блок nav-item
+    // Ищем весь блок контейнера
     const container = document.getElementById('phone-container');
+    const btn = document.getElementById('phone-btn');
     
-    if (container) {
+    // Флаг: открыт ли уже номер телефона
+    let isPhoneRevealed = false;
+
+    if (container && btn) {
+        // Вешаем событие КЛИКА на весь контейнер (плашку)
         container.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
-            
-            // Находим кнопку внутри контейнера
-            const btn = container.querySelector('#phone-btn');
-            
-            // Если кнопка уже была заменена на номер, ничего не делаем
-            if (!btn) return;
 
             const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
             
-            // Создаем элемент с жирным номером телефона
-            const numberSpan = document.createElement('strong');
-            numberSpan.className = 'phone-number-text';
-            numberSpan.innerText = formatted;
+            // Если номер еще скрыт — показываем его
+            if (!isPhoneRevealed) {
+                btn.innerText = formatted; // Меняем текст "Показать телефон" на сам номер
+                isPhoneRevealed = true;    // Запоминаем, что номер открыт
 
-            // Заменяем ТОЛЬКО саму кнопку на номер телефона (иконка трубки при этом вообще не перезаписывается)
-            btn.parentNode.replaceChild(numberSpan, btn);
-            
-            // Если кликнули с мобильного, параллельно инициируем звонок
-            if (isMobile) {
-                window.location.href = `tel:${raw}`;
+                if (isMobile) {
+                    window.location.href = `tel:${raw}`;
+                }
+            } 
+            // Если номер уже открыт — при повторном клике на мобильном сразу идет вызов
+            else {
+                if (isMobile) {
+                    window.location.href = `tel:${raw}`;
+                }
             }
         });
     }

@@ -158,80 +158,6 @@ body {
 }
 
 /* ==========================================================================
-   БЛОК ОТЗЫВОВ И ССЫЛОК (GLASSMORPHISM)
-   ========================================================================== */
-.reviews-slider {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 20px;
-    margin-bottom: 25px;
-}
-
-.glass-card {
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    padding: 25px;
-    border-radius: 16px;
-    transition: transform 0.3s ease, border-color 0.3s ease;
-}
-
-.glass-card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(223, 168, 108, 0.3);
-}
-
-.review-text {
-    font-style: italic;
-    color: var(--text-main);
-    margin-bottom: 15px;
-    font-size: 0.95rem;
-}
-
-.review-author {
-    display: block;
-    font-size: 0.85rem;
-    color: var(--gold);
-    font-weight: 600;
-    text-align: right;
-}
-
-.small-title {
-    font-size: 0.95rem;
-    color: var(--text-muted);
-    margin-bottom: 15px;
-}
-
-.chips-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.chip {
-    padding: 8px 18px;
-    border-radius: 20px;
-    text-decoration: none;
-    font-size: 0.85rem;
-    font-weight: 600;
-    background: rgba(255,255,255,0.02);
-    border: 1px solid var(--card-border);
-    color: var(--text-main);
-    transition: all 0.2s;
-}
-
-.chip:hover {
-    border-color: #ffffff;
-    background: rgba(255,255,255,0.08);
-}
-
-/* Цвета интерактивного выделения для платформ при наведении */
-.chip.cian:hover { border-color: #04b3ff; color: #04b3ff; }
-.chip.avito:hover { border-color: #72bf44; color: #72bf44; }
-.chip.yandex:hover { border-color: #e62e00; color: #e62e00; }
-
-/* ==========================================================================
    СЕТКА КОНТАКТОВ (КЛИКАБЕЛЬНЫЕ ПЛАШКИ)
    ========================================================================== */
 .contacts-nav {
@@ -361,7 +287,7 @@ footer {
     }
 }
 
-css/* Блок отзывов */
+/* Блок отзывов */
 .reviews-section {
     padding: 50px 20px;
     font-family: system-ui, -apple-system, sans-serif;
@@ -470,6 +396,13 @@ css/* Блок отзывов */
     font-weight: 500;
 }
 
+.reviews-more {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-top: 10px;
+}
+
 
 /* Применяем жесткие стили к кнопке и к будущей ссылке */
 #phone-container .phone-link, 
@@ -505,11 +438,8 @@ css/* Блок отзывов */
 }
 
 
-/* Контейнер выравнивает иконку и кнопку/номер строго по центру */
+/* Курсор для кликабельной плашки телефона (сама плашка теперь div, а не ссылка) */
 .phone-block {
-    display: inline-flex !important;
-    align-items: center !important; /* Центрирование по вертикали */
-    gap: 8px; /* Отступ между трубкой и текстом/номером */
     cursor: pointer;
 }
 
@@ -528,18 +458,6 @@ css/* Блок отзывов */
     font: inherit;
     color: inherit;
     cursor: pointer;
-}
-
-/* Делаем весь пункт меню кликабельным */
-.nav-item#phone-container {
-    cursor: pointer !important;
-    display: inline-flex; /* или flex, в зависимости от вашей текущей верстки */
-    align-items: center;  /* Идеальное выравнивание по центру вертикали */
-}
-
-/* Запрещаем иконке и кнопке перехватывать клик у главного div */
-.nav-item#phone-container * {
-    pointer-events: none !important;
 }
 
 /* Стили для текста номера после клика */
