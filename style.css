@@ -48,7 +48,7 @@ body {
    ШАПКА САЙТА (HERO BLOCK С ФОТОГРАФИЕЙ)
    ========================================================================== */
 .hero {
-    padding: 40px 0 20px 0;
+    padding: 40px 0 40px 0;
 }
 
 .hero-layout {
@@ -306,12 +306,12 @@ footer {
 
 /* Блок отзывов */
 .reviews-section {
-    padding: 50px 24px 20px;
+    padding: 50px 24px;
 }
 
 .reviews-container {
     max-width: 900px;
-    margin: 0 auto;
+    margin: 0 auto 20px;
 }
 
 .reviews-title {
@@ -450,30 +450,6 @@ footer {
 .reviews-page-header .subtitle {
     color: var(--text-muted);
     font-weight: 300;
-}
-
-.reviews-person {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    margin-top: 20px;
-}
-
-.reviews-person-photo {
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    object-fit: cover;
-    padding: 2px;
-    background: linear-gradient(135deg, var(--gold), transparent);
-    box-shadow: 0 0 15px var(--gold-glow);
-}
-
-.reviews-person-name {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #ffffff;
 }
 
 .back-link {
