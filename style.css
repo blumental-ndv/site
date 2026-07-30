@@ -289,7 +289,7 @@ footer {
     .hero-actions {
         justify-content: center;
     }
-    .review-card {
+    .reviews-grid .review-card {
         flex: 0 0 260px !important;
         width: 260px !important;
     }
@@ -467,14 +467,34 @@ footer {
 
 .all-reviews-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: 1fr;
     gap: 20px;
-    padding: 10px 0 60px;
+    padding: 10px 0 40px;
 }
 
 .all-reviews-grid .review-card {
-    width: auto;
+    width: 100%;
+    min-width: 500px;
+    max-width: 600px;
+    margin: 0 auto;
     flex: none;
+}
+
+/* На узких экранах карточка ужимается под ширину экрана, а не держит жёсткий минимум 500px */
+@media (max-width: 600px) {
+    .all-reviews-grid .review-card {
+        min-width: 0;
+    }
+}
+
+/* Страница отзывов шире общего .container, т.к. карточкам нужно больше места */
+.reviews-page-main {
+    max-width: 700px;
+}
+
+.reviews-bottom-link {
+    text-align: center;
+    padding-bottom: 40px;
 }
 
 
