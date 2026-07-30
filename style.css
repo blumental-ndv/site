@@ -452,6 +452,30 @@ footer {
     font-weight: 300;
 }
 
+.reviews-person {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.reviews-person-photo {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+    padding: 2px;
+    background: linear-gradient(135deg, var(--gold), transparent);
+    box-shadow: 0 0 15px var(--gold-glow);
+}
+
+.reviews-person-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #ffffff;
+}
+
 .back-link {
     display: inline-block;
     color: var(--gold);
