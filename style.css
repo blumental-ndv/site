@@ -48,7 +48,7 @@ body {
    ШАПКА САЙТА (HERO BLOCK С ФОТОГРАФИЕЙ)
    ========================================================================== */
 .hero {
-    padding: 40px 0 40px 0;
+    padding: 40px 0 20px 0;
 }
 
 .hero-layout {
@@ -306,12 +306,12 @@ footer {
 
 /* Блок отзывов */
 .reviews-section {
-    padding: 50px 24px;
+    padding: 50px 24px 20px;
 }
 
 .reviews-container {
     max-width: 900px;
-    margin: 0 auto 20px;
+    margin: 0 auto;
 }
 
 .reviews-title {
