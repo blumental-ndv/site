@@ -293,6 +293,12 @@ footer {
         flex: 0 0 260px !important;
         width: 260px !important;
     }
+    .review-text {
+        font-size: 1.05rem;
+    }
+    .reviews-more {
+        font-size: 1rem;
+    }
     .contacts-nav { 
         grid-template-columns: 1fr; 
     }
