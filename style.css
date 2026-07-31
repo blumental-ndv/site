@@ -463,13 +463,24 @@ footer {
     padding: 12px 24px;
 }
 
+.reviews-sticky-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 900px;
+    margin: 0 auto;
+    gap: 12px;
+}
+
+.reviews-sticky-spacer {
+    flex: 0 0 auto;
+    width: 90px; /* Уравновешивает ширину ссылки "На главную" слева, чтобы блок с фото был по центру */
+}
+
 .reviews-person {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 12px;
-    max-width: 700px;
-    margin: 0 auto;
+    gap: 10px;
 }
 
 .reviews-person-photo {
@@ -491,10 +502,22 @@ footer {
     background-color: #111625;
 }
 
+.reviews-person-text {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
 .reviews-person-name {
     font-size: 1.05rem;
     font-weight: 600;
     color: #ffffff;
+}
+
+.reviews-person-role {
+    font-size: 0.8rem;
+    font-weight: 300;
+    color: var(--text-muted);
 }
 
 .back-link {
@@ -529,6 +552,22 @@ footer {
 @media (max-width: 600px) {
     .all-reviews-grid .review-card {
         min-width: 0;
+    }
+    .reviews-sticky-spacer {
+        display: none;
+    }
+    .reviews-sticky-inner {
+        gap: 8px;
+    }
+    .back-link {
+        font-size: 0.85rem;
+        white-space: nowrap;
+    }
+    .reviews-person-name {
+        font-size: 0.9rem;
+    }
+    .reviews-person-role {
+        font-size: 0.7rem;
     }
 }
 
