@@ -48,7 +48,7 @@ body {
    ШАПКА САЙТА (HERO BLOCK С ФОТОГРАФИЕЙ)
    ========================================================================== */
 .hero {
-    padding: 40px 0 40px 0;
+    padding: 40px 0 20px 0;
 }
 
 .hero-layout {
@@ -306,12 +306,12 @@ footer {
 
 /* Блок отзывов */
 .reviews-section {
-    padding: 50px 24px;
+    padding: 50px 24px 20px;
 }
 
 .reviews-container {
     max-width: 900px;
-    margin: 0 auto 20px;
+    margin: 0 auto;
 }
 
 .reviews-title {
@@ -450,6 +450,51 @@ footer {
 .reviews-page-header .subtitle {
     color: var(--text-muted);
     font-weight: 300;
+}
+
+.reviews-sticky-bar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(10, 15, 29, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--card-border);
+    padding: 12px 24px;
+}
+
+.reviews-person {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.reviews-person-photo {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    padding: 2px;
+    background: linear-gradient(135deg, var(--gold), transparent);
+    box-shadow: 0 0 12px var(--gold-glow);
+}
+
+.reviews-person-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+    background-color: #111625;
+}
+
+.reviews-person-name {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #ffffff;
 }
 
 .back-link {
