@@ -108,6 +108,7 @@
             </ul>
         </section>
 
+
 <!-- Блок «Отзывы обо мне» -->
 <section class="reviews-section">
     <div class="reviews-container">
@@ -313,6 +314,92 @@
                 </div>
         </section>
     
+        <!-- КЕЙСЫ КЛИЕНТОВ (временно скрыто — раздел ещё в работе, чтобы вернуть, раскомментируйте блок ниже)
+        <section class="section-block">
+            <h2 class="section-title">Кейсы клиентов</h2>
+            <p class="about-desc">Реальные примеры того, какие квартиры удалось подобрать клиентам: планировки, стоимость и условия ипотеки.</p>
+            <p><a href="cases.html" class="review-link">Смотреть кейсы →</a></p>
+        </section>
+        -->
+
+        <!-- КВИЗ ПОДБОРА КВАРТИРЫ -->
+        <section class="section-block">
+            <div class="quiz-card" id="quiz-card">
+
+                <!-- Прогресс -->
+                <div class="quiz-progress">
+                    <span class="quiz-dot active" data-dot="1"></span>
+                    <span class="quiz-dot" data-dot="2"></span>
+                    <span class="quiz-dot" data-dot="3"></span>
+                </div>
+
+                <!-- Шаг 1 -->
+                <div class="quiz-step active" data-step="1">
+                    <h3 class="quiz-question">Подберём квартиру под ваш запрос?</h3>
+                    <p class="quiz-subtitle">Какая квартира вас интересует?</p>
+                    <div class="quiz-options">
+                        <button type="button" class="quiz-option" data-field="rooms" data-value="Студия">Студия</button>
+                        <button type="button" class="quiz-option" data-field="rooms" data-value="1-комнатная">1-комнатная</button>
+                        <button type="button" class="quiz-option" data-field="rooms" data-value="2-комнатная">2-комнатная</button>
+                        <button type="button" class="quiz-option" data-field="rooms" data-value="3+ комнат">3+ комнат</button>
+                    </div>
+                </div>
+
+                <!-- Шаг 2 -->
+                <div class="quiz-step" data-step="2">
+                    <p class="quiz-subtitle">Какой бюджет рассматриваете?</p>
+                    <div class="quiz-options">
+                        <button type="button" class="quiz-option" data-field="budget" data-value="до 6 млн ₽">До 6 млн ₽</button>
+                        <button type="button" class="quiz-option" data-field="budget" data-value="6–10 млн ₽">6–10 млн ₽</button>
+                        <button type="button" class="quiz-option" data-field="budget" data-value="10–15 млн ₽">10–15 млн ₽</button>
+                        <button type="button" class="quiz-option" data-field="budget" data-value="15+ млн ₽">15+ млн ₽</button>
+                    </div>
+                    <button type="button" class="quiz-back" data-back="1">← Назад</button>
+                </div>
+
+                <!-- Шаг 3 — контакты -->
+                <div class="quiz-step" data-step="3">
+                    <p class="quiz-subtitle">Куда прислать подборку? Оставьте контакт — я свяжусь в течение дня</p>
+
+                    <div class="quiz-channel-select">
+                        <button type="button" class="quiz-channel-option selected" data-channel="telegram">
+                            <span class="icon icon-svg">
+                                <svg viewBox="0 0 240 240" width="20" height="20" aria-hidden="true">
+                                    <circle cx="120" cy="120" r="120" fill="#229ED9"/>
+                                    <path fill="#ffffff" d="M180.5 72.8 158 179.2c-1.7 7.6-6.2 9.5-12.5 5.9l-34.6-25.5-16.7 16.1c-1.8 1.8-3.4 3.4-6.9 3.4l2.5-35.2 64-57.8c2.8-2.5-.6-3.9-4.3-1.4l-79.1 49.8-34.1-10.7c-7.4-2.3-7.6-7.4 1.6-11l133.3-51.4c6.2-2.3 11.6 1.5 9.6 10.2Z"/>
+                                </svg>
+                            </span>
+                            Telegram
+                        </button>
+                        <button type="button" class="quiz-channel-option" data-channel="max">
+                            <span class="icon icon-svg">
+                                <svg viewBox="0 0 240 240" width="20" height="20" aria-hidden="true">
+                                    <defs>
+                                        <linearGradient id="maxGradQuiz" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" stop-color="#5B57F2"/>
+                                            <stop offset="100%" stop-color="#B84DE0"/>
+                                        </linearGradient>
+                                    </defs>
+                                    <circle cx="120" cy="120" r="120" fill="url(#maxGradQuiz)"/>
+                                    <path fill="#ffffff" d="M120 58c-35.3 0-64 25.4-64 56.7 0 18.5 10 35 25.6 45.4-1 8.4-4 18-9.4 26.7-1.4 2.3.7 5.1 3.3 4.4 13.6-3.6 25-10 32.8-15.7 3.8.6 7.7.9 11.7.9 35.3 0 64-25.4 64-56.7S155.3 58 120 58Z"/>
+                                </svg>
+                            </span>
+                            Max
+                        </button>
+                    </div>
+
+                    <form class="quiz-form" id="quiz-form">
+                        <input type="text" id="quiz-name" class="quiz-input" placeholder="Ваше имя" autocomplete="name">
+                        <input type="tel" id="quiz-phone" class="quiz-input" placeholder="Телефон" autocomplete="tel">
+                        <button type="submit" class="quiz-submit">Получить подборку →</button>
+                    </form>
+                    <p class="quiz-fineprint" id="quiz-fineprint">Нажимая кнопку, вы даёте <a href="privacy.html" target="_blank">согласие на обработку персональных данных</a>. Сообщение откроется в Telegram — ничего никуда автоматически не отправляется без вашего подтверждения.</p>
+                    <button type="button" class="quiz-back" data-back="2">← Назад</button>
+                </div>
+
+            </div>
+        </section>
+
         <!-- КОНТАКТЫ -->
         <section class="section-block">
             <h2 class="section-title">Прочие контакты</h2>
@@ -391,6 +478,7 @@
     </footer>
 
 <script src="phone.js"></script>
+<script src="quiz.js"></script>
 
 </body>
 </html>
