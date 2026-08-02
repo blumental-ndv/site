@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://blumental-ndv.ru/sitemap.xml

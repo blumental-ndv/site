@@ -65,6 +65,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Всплывающее уведомление (тост)
+    function showToast(message) {
+        let toast = document.getElementById('quiz-toast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'quiz-toast';
+            toast.className = 'quiz-toast';
+            document.body.appendChild(toast);
+        }
+        toast.textContent = message;
+        toast.classList.add('visible');
+        clearTimeout(showToast._timer);
+        showToast._timer = setTimeout(() => {
+            toast.classList.remove('visible');
+        }, 2500);
+    }
+
     // Финальная отправка
     const form = document.getElementById('quiz-form');
     if (form) {
@@ -90,7 +107,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Max пока не поддерживает текст в диплинке — копируем в буфер и открываем чат отдельно
                 const maxUrl = 'https://max.ru/u/f9LHodD0cOKD9Wfy5uiVw2rCFxE56XOKsM2zfkwny18IveR99Hzgg6xTbGc';
                 if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(lines).catch(() => {});
+                    navigator.clipboard.writeText(lines)
+                        .then(() => showToast('Текст скопирован!'))
+                        .catch(() => showToast('Не удалось скопировать — скопируйте текст вручную'));
+                } else {
+                    showToast('Не удалось скопировать — скопируйте текст вручную');
                 }
                 window.open(maxUrl, '_blank');
             }
