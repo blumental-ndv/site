@@ -96,6 +96,7 @@
     <main class="container">
         <!-- ОБО МНЕ -->
         <section class="section-block">
+            <div class="sticky-sentinel"></div>
             <h2 class="section-title">Обо мне</h2>
             <p class="about-desc">В недвижимости c 2014 года. За это время изучила рынок изнутри: работала в самых крупных агентствах недвижимости и отделах продаж застройщиков, провела множество сделок. Теперь я использую этот опыт, чтобы помогать вам.</p>
             <p>Что входит в мои услуги:</p>
@@ -112,6 +113,7 @@
 <!-- Блок «Отзывы обо мне» -->
 <section class="reviews-section">
     <div class="reviews-container">
+        <div class="sticky-sentinel"></div>
         <h2 class="reviews-title">Отзывы клиентов</h2>
         <div class="reviews-grid">
             <!-- Карточка отзыва 1 -->
@@ -315,6 +317,7 @@
     
         <!-- КЕЙСЫ КЛИЕНТОВ (временно скрыто — раздел ещё в работе, чтобы вернуть, раскомментируйте блок ниже)
         <section class="section-block">
+            <div class="sticky-sentinel"></div>
             <h2 class="section-title">Кейсы клиентов</h2>
             <p class="about-desc">Реальные примеры того, какие квартиры удалось подобрать клиентам: планировки, стоимость и условия ипотеки.</p>
             <p><a href="cases.html" class="review-link">Смотреть кейсы →</a></p>
@@ -323,6 +326,8 @@
 
         <!-- КВИЗ ПОДБОРА КВАРТИРЫ -->
         <section class="section-block">
+            <div class="sticky-sentinel"></div>
+            <h2 class="section-title">Подбор квартиры</h2>
             <div class="quiz-card" id="quiz-card">
 
                 <!-- Прогресс -->
@@ -330,11 +335,13 @@
                     <span class="quiz-dot active" data-dot="1"></span>
                     <span class="quiz-dot" data-dot="2"></span>
                     <span class="quiz-dot" data-dot="3"></span>
+                    <span class="quiz-dot" data-dot="4"></span>
+                    <span class="quiz-dot" data-dot="5"></span>
+                    <span class="quiz-dot" data-dot="6"></span>
                 </div>
 
                 <!-- Шаг 1 -->
                 <div class="quiz-step active" data-step="1">
-                    <h3 class="quiz-question">Подберём квартиру под ваш запрос?</h3>
                     <p class="quiz-subtitle">Какая квартира вас интересует?</p>
                     <div class="quiz-options">
                         <button type="button" class="quiz-option" data-field="rooms" data-value="Студия">Студия</button>
@@ -346,6 +353,28 @@
 
                 <!-- Шаг 2 -->
                 <div class="quiz-step" data-step="2">
+                    <p class="quiz-subtitle">Для чего рассматриваете покупку?</p>
+                    <div class="quiz-options">
+                        <button type="button" class="quiz-option" data-field="purpose" data-value="Для жизни">Для жизни</button>
+                        <button type="button" class="quiz-option" data-field="purpose" data-value="Для инвестиций">Для инвестиций</button>
+                        <button type="button" class="quiz-option" data-field="purpose" data-value="Пока присматриваюсь">Пока присматриваюсь</button>
+                    </div>
+                    <button type="button" class="quiz-back" data-back="1">← Назад</button>
+                </div>
+
+                <!-- Шаг 3 -->
+                <div class="quiz-step" data-step="3">
+                    <p class="quiz-subtitle">Нужна ли ипотека?</p>
+                    <div class="quiz-options">
+                        <button type="button" class="quiz-option" data-field="mortgage" data-value="Да, нужна ипотека">Да, нужна</button>
+                        <button type="button" class="quiz-option" data-field="mortgage" data-value="Нет, свои средства">Нет, свои средства</button>
+                        <button type="button" class="quiz-option" data-field="mortgage" data-value="Ещё не решил(а)">Ещё не решил(а)</button>
+                    </div>
+                    <button type="button" class="quiz-back" data-back="2">← Назад</button>
+                </div>
+
+                <!-- Шаг 4 -->
+                <div class="quiz-step" data-step="4">
                     <p class="quiz-subtitle">Какой бюджет рассматриваете?</p>
                     <div class="quiz-options">
                         <button type="button" class="quiz-option" data-field="budget" data-value="до 6 млн ₽">До 6 млн ₽</button>
@@ -353,11 +382,23 @@
                         <button type="button" class="quiz-option" data-field="budget" data-value="10–15 млн ₽">10–15 млн ₽</button>
                         <button type="button" class="quiz-option" data-field="budget" data-value="15+ млн ₽">15+ млн ₽</button>
                     </div>
-                    <button type="button" class="quiz-back" data-back="1">← Назад</button>
+                    <button type="button" class="quiz-back" data-back="3">← Назад</button>
                 </div>
 
-                <!-- Шаг 3 — контакты -->
-                <div class="quiz-step" data-step="3">
+                <!-- Шаг 5 -->
+                <div class="quiz-step" data-step="5">
+                    <p class="quiz-subtitle">В какие сроки нужно получить ключи?</p>
+                    <div class="quiz-options">
+                        <button type="button" class="quiz-option" data-field="timeline" data-value="Уже сейчас, готовая квартира">Уже сейчас</button>
+                        <button type="button" class="quiz-option" data-field="timeline" data-value="В течение года">В течение года</button>
+                        <button type="button" class="quiz-option" data-field="timeline" data-value="1–2 года">1–2 года</button>
+                        <button type="button" class="quiz-option" data-field="timeline" data-value="Сроки не важны">Сроки не важны</button>
+                    </div>
+                    <button type="button" class="quiz-back" data-back="4">← Назад</button>
+                </div>
+
+                <!-- Шаг 6 — контакты -->
+                <div class="quiz-step" data-step="6">
                     <p class="quiz-subtitle">Куда прислать подборку? Оставьте контакт — я свяжусь в течение дня</p>
 
                     <div class="quiz-channel-select">
@@ -393,7 +434,7 @@
                         <button type="submit" class="quiz-submit">Получить подборку →</button>
                     </form>
                     <p class="quiz-fineprint" id="quiz-fineprint">Нажимая кнопку, вы даёте <a href="privacy.html" target="_blank">согласие на обработку персональных данных</a>. Сообщение откроется в Telegram — ничего никуда автоматически не отправляется без вашего подтверждения.</p>
-                    <button type="button" class="quiz-back" data-back="2">← Назад</button>
+                    <button type="button" class="quiz-back" data-back="5">← Назад</button>
                 </div>
 
             </div>
@@ -401,6 +442,7 @@
 
         <!-- КОНТАКТЫ -->
         <section class="section-block">
+            <div class="sticky-sentinel"></div>
             <h2 class="section-title">Прочие контакты</h2>
             <div class="contacts-nav">
               
@@ -478,6 +520,7 @@
 
 <script src="phone.js"></script>
 <script src="quiz.js"></script>
+<script src="sticky-headers.js"></script>
 
 </body>
 </html>

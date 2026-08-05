@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const steps = Array.from(card.querySelectorAll('.quiz-step'));
     const dots = Array.from(card.querySelectorAll('.quiz-dot'));
-    const answers = { rooms: '', budget: '' };
+    const answers = { rooms: '', purpose: '', mortgage: '', budget: '', timeline: '' };
     let channel = 'telegram';
 
     function goToStep(n) {
@@ -94,7 +94,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const lines = [
                 'Здравствуйте! Прошла(-ел) квиз на сайте, хочу подобрать квартиру.',
                 answers.rooms ? `Интересует: ${answers.rooms}` : '',
+                answers.purpose ? `Цель: ${answers.purpose}` : '',
+                answers.mortgage ? `Ипотека: ${answers.mortgage}` : '',
                 answers.budget ? `Бюджет: ${answers.budget}` : '',
+                answers.timeline ? `Сроки получения ключей: ${answers.timeline}` : '',
                 name ? `Имя: ${name}` : '',
                 phone ? `Телефон: ${phone}` : ''
             ].filter(Boolean).join('\n');
