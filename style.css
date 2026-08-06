@@ -326,7 +326,7 @@ footer {
         padding-left: 24px;
         padding-right: 24px;
         padding-top: 10px;
-        background: rgba(10, 15, 29, 0.85);
+    
         border-top: 1px solid transparent;
         transition: border-top-color 0.15s ease;
     }
