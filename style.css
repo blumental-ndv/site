@@ -285,7 +285,6 @@ footer {
         flex-direction: column; /* Фото встанет над текстом по центру */
         text-align: center;
         gap: 20px;
-
         
     }
     .hero h1 { 
