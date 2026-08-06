@@ -326,12 +326,14 @@ footer {
         padding-left: 24px;
         padding-right: 24px;
         padding-top: 10px;
+        background: rgba(10, 15, 29, 0.85);
         border-top: 1px solid transparent;
         transition: border-top-color 0.15s ease;
     }
-    /* Фон подключается JS-ом только когда заголовок реально прилип к верху экрана —
+    /* Фон точнее подгоняется JS-ом, когда заголовок реально прилип к верху экрана —
        в этот момент его позиция на экране всегда одна и та же (y=0), поэтому можно
-       точно взять "верхний срез" того же узора свечения без fixed-attachment трюков */
+       точно взять "верхний срез" того же узора свечения без fixed-attachment трюков.
+       Если JS не отработает по какой-то причине — останется запасной сплошной фон выше. */
     .section-title.title-stuck,
     .reviews-title.title-stuck {
         background:
@@ -348,7 +350,7 @@ footer {
 
 /* Блок отзывов */
 .reviews-section {
-    padding: 0px 0 20px;
+    padding: 50px 0 20px;
 }
 
 .reviews-container {
