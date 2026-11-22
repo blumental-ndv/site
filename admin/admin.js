@@ -19,9 +19,9 @@ function message(id, value, error = false) {
   $(id).style.color = error ? "#f18c8c" : "#6bd5a2";
 }
 function slugify(value) {
-  return value.toLowerCase().trim().replace(/[ё]/g,"e").replace(/й/g,"i")
-    .replace(/[а-я]/g, c => "abcdefghijklmnopqrstuvwxyz"[ "абвгдежзийклмнопрстуфхцчшщъыьэюя".indexOf(c) ] || "")
-    .replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+  const map = {а:"a",б:"b",в:"v",г:"g",д:"d",е:"e",ё:"e",ж:"zh",з:"z",и:"i",й:"i",к:"k",л:"l",м:"m",н:"n",о:"o",п:"p",р:"r",с:"s",т:"t",у:"u",ф:"f",х:"h",ц:"ts",ч:"ch",ш:"sh",щ:"shch",ъ:"",ы:"y",ь:"",э:"e",ю:"yu",я:"ya"};
+  return value.toLowerCase().trim().split("").map(c => map[c] ?? c)
+    .join("").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
 }
 function escapeHtml(value) {
   return String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -77,6 +77,7 @@ async function openItem(id) {
   if (error) return message("save-message", error.message, true);
   selectedId = data.id;
   $("item-id").value = data.id;
+  $("item-slug").dataset.touched = "1";
   $("item-title").value = data.title;
   $("item-slug").value = data.slug;
   $("item-status").value = data.status;
@@ -93,6 +94,7 @@ function newItem() {
   $("item-id").value = "";
   $("item-title").value = "";
   $("item-slug").value = "";
+  $("item-slug").dataset.touched = "";
   $("item-status").value = "draft";
   $("item-payload").value = JSON.stringify(defaultPayload(currentType), null, 2);
   $("editor-title").textContent = "Новый материал";
@@ -106,7 +108,7 @@ function defaultPayload(type) {
     object: { name: "", city: "", developer: "", address: "", description: "", images: [], page_ids: [] },
     case: { object_id: null, property_type: "", area_m2: null, deal_date: "", price: null, payment_terms: "", description: "", images: [], review_ids: [], specialist_ids: [] },
     specialist: { name: "", role: "", photo: "", bio: "", contacts: {}, review_ids: [], case_ids: [] },
-    article: { excerpt: "", body: "", cover_image: "", seo_title: "", seo_description: [], page_ids: [] },
+    article: { excerpt: "", body: "", cover_image: "", seo_title: "", seo_description: "", page_ids: [] },
     page: { seo_title: "", seo_description: "", canonical_url: "", og_image: "", content: {} }
   };
   return examples[type] || {};
@@ -147,12 +149,14 @@ $("editor-form").addEventListener("submit", async (event) => {
   const record = {
     type: currentType, title: $("item-title").value.trim(),
     slug: $("item-slug").value.trim(), status: $("item-status").value,
-    payload, created_by: (await supabaseClient.auth.getUser()).data.user?.id
+    payload
   };
   if (!record.title || !record.slug) return message("save-message", "Заполни заголовок и адрес.", true);
   const query = selectedId
     ? supabaseClient.from("content_items").update(record).eq("id", selectedId)
-    : supabaseClient.from("content_items").insert(record);
+    : supabaseClient.from("content_items").insert({
+        ...record, created_by: (await supabaseClient.auth.getUser()).data.user?.id
+      });
   const { data, error } = await query.select("id").single();
   if (error) return message("save-message", error.message, true);
   selectedId = data.id;
