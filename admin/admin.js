@@ -165,6 +165,12 @@ function readPayload() {
   }
   return payload;
 }
+$("review-author").addEventListener("input", () => {
+  const author = $("review-author").value.trim();
+  $("item-title").value = author ? "Отзыв — " + author : "";
+  if (!$("item-slug").dataset.touched) $("item-slug").value = author ? slugify("otzyv-" + author) : "";
+});
+
 $("object-name").addEventListener("input", () => {
   const name = $("object-name").value;
   $("item-title").value = name;
