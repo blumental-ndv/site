@@ -104,9 +104,9 @@ function newItem() {
 }
 function defaultPayload(type) {
   const examples = {
-    review: { text: "", author: "", date: "", source_url: "", rating: 5, page_ids: [], object_ids: [], case_ids: [],  },
+    review: { text: "", author: "", date: "", source_url: "", rating: 5, page_ids: [], object_ids: [], case_ids: [] },
     object: { name: "", city: "", developer: "", address: "", description: "", images: [], page_ids: [] },
-    case: { object_id: null, property_type: "", area_m2: null, deal_date: "", price: null, payment_terms: "", description: "", images: [], review_ids: [], specialist_ids: [] },
+    case: { object_id: null, property_type: "", area_m2: null, deal_date: "", price: null, payment_terms: "", description: "", images: [], review_ids: [] },
     article: { excerpt: "", body: "", cover_image: "", seo_title: "", seo_description: "", page_ids: [] },
     page: { seo_title: "", seo_description: "", canonical_url: "", og_image: "", content: {} }
   };
