@@ -6,7 +6,7 @@ create extension if not exists pgcrypto;
 create table if not exists public.profiles (
   user_id uuid primary key references auth.users(id) on delete cascade,
   display_name text,
-  role text not null default 'editor' check (role in ('admin', 'editor')),
+  role text not null default 'admin' check (role = 'admin'),
   created_at timestamptz not null default now()
 );
 
@@ -67,7 +67,7 @@ stable
 security definer
 set search_path = public
 as $$
-  select coalesce(public.current_user_role() in ('admin', 'editor'), false)
+  select coalesce(public.current_user_role() = 'admin', false)
 $$;
 
 alter table public.profiles enable row level security;
@@ -115,5 +115,3 @@ with check (public.can_edit_content());
 -- select id, 'Владелец', 'admin' from auth.users where email = 'ВАШ_EMAIL'
 -- on conflict (user_id) do update set role = 'admin';
 --
--- Для Ольги создайте пользователя через Supabase Auth (invite by email),
--- затем добавьте профиль с ролью editor аналогичным INSERT.
