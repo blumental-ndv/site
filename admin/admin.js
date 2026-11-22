@@ -1,6 +1,6 @@
 // Заполнить после создания проекта Supabase. Используются только публичные значения.
 const SUPABASE_URL = "https://kdakrpgzeufyfjlzfzcn.supabase.co";
-const SUPABASE_ANON_KEY = "ВСТАВЬТЕ_SUPABASE_ANON_KEY";
+const SUPABASE_ANON_KEY = "sb_publishable_XkFCo4UH2nsA0Ex1wCKjGA_1tclbctl";
 
 const TYPES = {
   review: "Отзывы", object: "ЖК и объекты", case: "Кейсы",
