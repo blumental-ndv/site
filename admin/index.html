@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Админ-панель — Блюменталь</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <div class="ambient"></div>
+  <main class="shell">
+    <header class="topbar">
+      <a class="brand" href="../index.html"><span class="brand-mark">Б</span><span>Блюменталь<small>Управление сайтом</small></span></a>
+      <div class="top-actions"><span id="user-label" class="user-label"></span><button id="logout" class="button button-ghost" hidden>Выйти</button></div>
+    </header>
+
+    <section id="setup-notice" class="notice" hidden>
+      <strong>Нужно подключить Supabase</strong>
+      <p>Админка уже подготовлена, но для входа и сохранения данных нужны адрес проекта и публичный ключ Supabase. Добавим их в файл <code>admin/admin.js</code> после создания проекта. Секретный service-role key сюда добавлять нельзя.</p>
+    </section>
+
+    <section id="login-view" class="login-card" hidden>
+      <div class="eyebrow">ЗАКРЫТЫЙ РАЗДЕЛ</div>
+      <h1>Вход в админ-панель</h1>
+      <p class="muted">Войди по email. Доступ выдаётся владельцем сайта.</p>
+      <form id="login-form">
+        <label for="email">Email</label>
+        <input id="email" type="email" autocomplete="email" placeholder="name@example.com" required>
+        <button class="button button-primary" type="submit">Получить ссылку для входа</button>
+        <p id="login-message" class="form-message" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <section id="app-view" hidden>
+      <div class="welcome">
+        <div><div class="eyebrow">ПАНЕЛЬ УПРАВЛЕНИЯ</div><h1>Контент сайта</h1><p class="muted">Редактируй материалы в одном месте и связывай их между собой.</p></div>
+        <button id="new-item" class="button button-primary">＋ Добавить материал</button>
+      </div>
+      <nav id="type-tabs" class="tabs" aria-label="Типы материалов">
+        <button class="tab active" data-type="review">Отзывы</button>
+        <button class="tab" data-type="object">ЖК и объекты</button>
+        <button class="tab" data-type="case">Кейсы</button>
+        <button class="tab" data-type="specialist">Специалисты</button>
+        <button class="tab" data-type="article">Статьи</button>
+        <button class="tab" data-type="page">Страницы и SEO</button>
+      </nav>
+      <div class="content-layout">
+        <section class="list-panel">
+          <div class="list-heading"><h2 id="list-title">Отзывы</h2><span id="item-count" class="count">0</span></div>
+          <div id="items-list" class="items-list"><div class="empty">Загружаем материалы…</div></div>
+        </section>
+        <section class="editor-panel">
+          <div id="editor-empty" class="editor-empty"><div class="empty-icon">✦</div><h2>Выбери материал</h2><p>Или создай новый — он появится здесь для редактирования.</p></div>
+          <form id="editor-form" hidden>
+            <div class="editor-heading"><div><div class="eyebrow">РЕДАКТОР</div><h2 id="editor-title">Новый материал</h2></div><span id="status-pill" class="status-pill">Черновик</span></div>
+            <input id="item-id" type="hidden">
+            <div class="field-grid">
+              <label>Заголовок<input id="item-title" required maxlength="180" placeholder="Например, Отзыв клиента"></label>
+              <label>Адрес (slug)<input id="item-slug" required maxlength="100" placeholder="otzyv-anton-s"></label>
+            </div>
+            <label>Статус<select id="item-status"><option value="draft">Черновик</option><option value="published">Опубликован</option><option value="archived">В архиве</option></select></label>
+            <label>Содержимое (JSON)<textarea id="item-payload" spellcheck="false" rows="16">{}</textarea></label>
+            <p class="hint">Здесь хранятся поля материала. Связи с другими материалами добавим отдельным визуальным блоком следующего этапа.</p>
+            <div class="editor-actions"><button type="button" id="delete-item" class="button button-danger" hidden>Удалить</button><span class="spacer"></span><button type="button" id="cancel-edit" class="button button-ghost">Отмена</button><button type="submit" class="button button-primary">Сохранить</button></div>
+            <p id="save-message" class="form-message" aria-live="polite"></p>
+          </form>
+        </section>
+      </div>
+    </section>
+    <footer>Админ-панель · blumental-ndv.ru <span>Доступ только для приглашённых пользователей</span></footer>
+  </main>
+  <script src="admin.js"></script>
+</body>
+</html>
