@@ -121,14 +121,35 @@ async function configureEditor(payload = {}, fallbackTitle = "") {
   show("object-fields", isObject);
   show("payload-json-field", !isObject);
   if (!isObject) return;
+
+  const casesSelect = $("object-cases");
+  casesSelect.innerHTML = '<option disabled>Загружаем кейсы…</option>';
+  const { data: cases, error: casesError } = await supabaseClient.from("content_items")
+    .select("id,title,status").eq("type", "case").order("title");
+  if (casesError) {
+    casesSelect.innerHTML = '<option disabled>Не удалось загрузить кейсы</option>';
+    console.error(casesError);
+  } else {
+    casesSelect.innerHTML = (cases || []).map(item =>
+      '<option value="' + escapeHtml(item.id) + '">' + escapeHtml(item.title) + ' — ' + escapeHtml(statusName(item.status)) + '</option>'
+    ).join("");
+    const objectId = $("item-id").value;
+    if (objectId) {
+      const { data: links, error: linksError } = await supabaseClient.from("content_relations")
+        .select("target_id").eq("source_id", objectId).eq("relation_type", "object_case");
+      if (linksError) console.error(linksError);
+      const linkedIds = new Set((links || []).map(link => link.target_id));
+      [...casesSelect.options].forEach(option => { option.selected = linkedIds.has(option.value); });
+    }
+  }
+
   $("object-name").value = payload.name || fallbackTitle || "";
   $("object-city").value = payload.city || "";
   $("object-developer").value = payload.developer || "";
   $("object-address").value = payload.address || "";
   $("object-description").value = payload.description || "";
-  $("object-images").value = Array.isArray(payload.images) ? payload.images.join("\n") : "";
+  $("object-images").value = Array.isArray(payload.images) ? payload.images.join("\\n") : "";
 }
-
 function readPayload() {
   let payload;
   try {
