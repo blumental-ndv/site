@@ -82,6 +82,7 @@ async function openItem(id) {
   $("item-slug").value = data.slug;
   $("item-status").value = data.status;
   $("item-payload").value = JSON.stringify(data.payload || {}, null, 2);
+  configureEditor(data.payload || {}, data.title);
   $("editor-title").textContent = "Редактирование";
   $("status-pill").textContent = statusName(data.status);
   show("editor-empty", false); show("editor-form", true); show("delete-item", true);
@@ -96,7 +97,9 @@ function newItem() {
   $("item-slug").value = "";
   $("item-slug").dataset.touched = "";
   $("item-status").value = "draft";
-  $("item-payload").value = JSON.stringify(defaultPayload(currentType), null, 2);
+  const payload = defaultPayload(currentType);
+  $("item-payload").value = JSON.stringify(payload, null, 2);
+  configureEditor(payload, "");
   $("editor-title").textContent = "Новый материал";
   $("status-pill").textContent = "Черновик";
   show("editor-empty", false); show("editor-form", true); show("delete-item", false);
@@ -112,6 +115,44 @@ function defaultPayload(type) {
   };
   return examples[type] || {};
 }
+
+function configureEditor(payload = {}, fallbackTitle = "") {
+  const isObject = currentType === "object";
+  show("object-fields", isObject);
+  show("payload-json-field", !isObject);
+  if (!isObject) return;
+  $("object-name").value = payload.name || fallbackTitle || "";
+  $("object-city").value = payload.city || "";
+  $("object-developer").value = payload.developer || "";
+  $("object-address").value = payload.address || "";
+  $("object-description").value = payload.description || "";
+  $("object-images").value = Array.isArray(payload.images) ? payload.images.join("\\n") : "";
+}
+
+function readPayload() {
+  let payload;
+  try {
+    payload = JSON.parse($("item-payload").value || "{}");
+  } catch (error) {
+    throw new Error("Ошибка JSON: " + error.message);
+  }
+  if (currentType === "object") {
+    payload = payload && typeof payload === "object" && !Array.isArray(payload) ? payload : {};
+    payload.name = $("object-name").value.trim() || $("item-title").value.trim();
+    payload.city = $("object-city").value.trim();
+    payload.developer = $("object-developer").value.trim();
+    payload.address = $("object-address").value.trim();
+    payload.description = $("object-description").value.trim();
+    payload.images = $("object-images").value.split("\\n").map(value => value.trim()).filter(Boolean);
+  }
+  return payload;
+}
+
+$("object-name").addEventListener("input", () => {
+  const name = $("object-name").value;
+  $("item-title").value = name;
+  if (!$("item-slug").dataset.touched) $("item-slug").value = slugify(name);
+});
 
 $("login-form").addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -143,8 +184,8 @@ $("item-slug").addEventListener("input", () => { $("item-slug").dataset.touched 
 $("editor-form").addEventListener("submit", async (event) => {
   event.preventDefault();
   let payload;
-  try { payload = JSON.parse($("item-payload").value || "{}"); }
-  catch (error) { return message("save-message", "Ошибка JSON: " + error.message, true); }
+  try { payload = readPayload(); }
+  catch (error) { return message("save-message", error.message, true); }
   const record = {
     type: currentType, title: $("item-title").value.trim(),
     slug: $("item-slug").value.trim(), status: $("item-status").value,
