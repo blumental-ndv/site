@@ -4,7 +4,7 @@ const SUPABASE_ANON_KEY = "ВСТАВЬТЕ_SUPABASE_ANON_KEY";
 
 const TYPES = {
   review: "Отзывы", object: "ЖК и объекты", case: "Кейсы",
-  specialist: "Специалисты", article: "Статьи", page: "Страницы и SEO"
+  article: "Статьи", page: "Страницы и SEO"
 };
 const configured = SUPABASE_URL.startsWith("https://") && !SUPABASE_ANON_KEY.startsWith("ВСТАВЬТЕ");
 const $ = (id) => document.getElementById(id);
@@ -104,10 +104,9 @@ function newItem() {
 }
 function defaultPayload(type) {
   const examples = {
-    review: { text: "", author: "", date: "", source_url: "", rating: 5, page_ids: [], object_ids: [], case_ids: [], specialist_ids: [] },
+    review: { text: "", author: "", date: "", source_url: "", rating: 5, page_ids: [], object_ids: [], case_ids: [],  },
     object: { name: "", city: "", developer: "", address: "", description: "", images: [], page_ids: [] },
     case: { object_id: null, property_type: "", area_m2: null, deal_date: "", price: null, payment_terms: "", description: "", images: [], review_ids: [], specialist_ids: [] },
-    specialist: { name: "", role: "", photo: "", bio: "", contacts: {}, review_ids: [], case_ids: [] },
     article: { excerpt: "", body: "", cover_image: "", seo_title: "", seo_description: "", page_ids: [] },
     page: { seo_title: "", seo_description: "", canonical_url: "", og_image: "", content: {} }
   };
