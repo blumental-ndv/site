@@ -116,7 +116,7 @@ function defaultPayload(type) {
   return examples[type] || {};
 }
 
-function configureEditor(payload = {}, fallbackTitle = "") {
+async function configureEditor(payload = {}, fallbackTitle = "") {
   const isObject = currentType === "object";
   show("object-fields", isObject);
   show("payload-json-field", !isObject);
@@ -126,7 +126,7 @@ function configureEditor(payload = {}, fallbackTitle = "") {
   $("object-developer").value = payload.developer || "";
   $("object-address").value = payload.address || "";
   $("object-description").value = payload.description || "";
-  $("object-images").value = Array.isArray(payload.images) ? payload.images.join("\\n") : "";
+  $("object-images").value = Array.isArray(payload.images) ? payload.images.join("\n") : "";
 }
 
 function readPayload() {
@@ -143,7 +143,7 @@ function readPayload() {
     payload.developer = $("object-developer").value.trim();
     payload.address = $("object-address").value.trim();
     payload.description = $("object-description").value.trim();
-    payload.images = $("object-images").value.split("\\n").map(value => value.trim()).filter(Boolean);
+    payload.images = $("object-images").value.split(/\\r?\\n/).map(value => value.trim()).filter(Boolean);
   }
   return payload;
 }
@@ -200,6 +200,17 @@ $("editor-form").addEventListener("submit", async (event) => {
   const { data, error } = await query.select("id").single();
   if (error) return message("save-message", error.message, true);
   selectedId = data.id;
+  if (currentType === "object") {
+    const selectedCaseIds = [...$("object-cases").selectedOptions].map(option => option.value);
+    const { error: deleteRelationsError } = await supabaseClient.from("content_relations")
+      .delete().eq("source_id", selectedId).eq("relation_type", "object_case");
+    if (deleteRelationsError) return message("save-message", "Объект сохранён, но старые связи не удалось обновить: " + deleteRelationsError.message, true);
+    if (selectedCaseIds.length) {
+      const rows = selectedCaseIds.map(target_id => ({source_id:selectedId,target_id,relation_type:"object_case"}));
+      const { error: insertRelationsError } = await supabaseClient.from("content_relations").insert(rows);
+      if (insertRelationsError) return message("save-message", "Объект сохранён, но кейсы не связаны: " + insertRelationsError.message, true);
+    }
+  }
   message("save-message", "Сохранено.");
   await openItem(selectedId);
 });
