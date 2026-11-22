@@ -13,7 +13,7 @@
 1. Создать проект Supabase.
 2. В Authentication → Sign In / Providers оставить включённым Email, а в настройках Auth отключить публичную регистрацию (Allow new users to sign up), чтобы новые аккаунты не могли самостоятельно регистрироваться.
 3. Выполнить актуальный файл `supabase/schema.sql` в SQL Editor.
-4. В Authentication → URL Configuration указать адрес сайта в Site URL и добавить точный URL админки в Redirect URLs.
+4. В Authentication → URL Configuration указать адрес сайта в Site URL и добавить точный URL админки в Redirect URLs. В настройках Auth отключить публичную регистрацию (Allow new users to sign up), чтобы аккаунты не могли создавать посторонние.
 5. В `admin/admin.js` заполнить `SUPABASE_URL` и `SUPABASE_ANON_KEY` публичными параметрами проекта. Никогда не добавлять service-role/secret key в репозиторий.
 6. Создать единственную учётную запись владельца через Supabase Dashboard → Authentication → Users (Invite user / Add user).
 7. После создания пользователя выполнить SQL-команду назначения роли admin из конца `schema.sql`, заменив `ВАШ_EMAIL` на email владельца.
