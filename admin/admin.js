@@ -164,7 +164,7 @@ function readPayload() {
     payload.developer = $("object-developer").value.trim();
     payload.address = $("object-address").value.trim();
     payload.description = $("object-description").value.trim();
-    payload.images = $("object-images").value.split(/\\r?\\n/).map(value => value.trim()).filter(Boolean);
+    payload.images = $("object-images").value.split(/\r?\n/).map(value => value.trim()).filter(Boolean);
   }
   return payload;
 }
