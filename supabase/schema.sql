@@ -58,11 +58,11 @@ stable
 security definer
 set search_path = ''
 set row_security = off
-as $
+as $$
   select p.role
   from public.profiles as p
   where p.user_id = auth.uid()
-$;
+$$;
 
 revoke all on function public.current_user_role() from public;
 grant execute on function public.current_user_role() to authenticated;
@@ -74,9 +74,9 @@ stable
 security definer
 set search_path = ''
 set row_security = off
-as $
+as $$
   select coalesce(public.current_user_role() = 'admin', false)
-$;
+$$;
 
 revoke all on function public.can_edit_content() from public;
 grant execute on function public.can_edit_content() to anon, authenticated;
