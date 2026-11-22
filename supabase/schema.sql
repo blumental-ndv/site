@@ -12,7 +12,7 @@ create table if not exists public.profiles (
 
 create table if not exists public.content_items (
   id uuid primary key default gen_random_uuid(),
-  type text not null check (type in ('review', 'object', 'case', 'specialist', 'article', 'page')),
+  type text not null check (type in ('review', 'object', 'case', 'article', 'page')),
   slug text not null,
   title text not null,
   status text not null default 'draft' check (status in ('draft', 'published', 'archived')),
@@ -27,7 +27,7 @@ create table if not exists public.content_relations (
   id uuid primary key default gen_random_uuid(),
   source_id uuid not null references public.content_items(id) on delete cascade,
   target_id uuid not null references public.content_items(id) on delete cascade,
-  relation_type text not null,
+  relation_type text not null check (relation_type in ('review_object', 'review_case', 'review_page', 'object_case', 'object_page', 'case_page')),
   created_at timestamptz not null default now(),
   unique(source_id, target_id, relation_type),
   check (source_id <> target_id)
@@ -74,13 +74,11 @@ alter table public.profiles enable row level security;
 alter table public.content_items enable row level security;
 alter table public.content_relations enable row level security;
 
--- Пользователь видит собственный профиль; администратор видит все профили.
 drop policy if exists "Read own profile or admin" on public.profiles;
 create policy "Read own profile or admin" on public.profiles
 for select to authenticated
 using (user_id = auth.uid() or public.current_user_role() = 'admin');
 
--- Создание и изменение ролей не открываем обычным редакторам.
 drop policy if exists "Admins manage profiles" on public.profiles;
 create policy "Admins manage profiles" on public.profiles
 for all to authenticated
