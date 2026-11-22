@@ -1,5 +1,5 @@
 // Заполнить после создания проекта Supabase. Используются только публичные значения.
-const SUPABASE_URL = "ВСТАВЬТЕ_SUPABASE_PROJECT_URL";
+const SUPABASE_URL = "https://kdakrpgzeufyfjlzfzcn.supabase.co";
 const SUPABASE_ANON_KEY = "ВСТАВЬТЕ_SUPABASE_ANON_KEY";
 
 const TYPES = {
