@@ -42,10 +42,6 @@
       </div>
       <nav id="type-tabs" class="tabs" aria-label="Типы материалов">
         <button class="tab active" data-type="review">Отзывы</button>
-        <button class="tab" data-type="object">ЖК и объекты</button>
-        <button class="tab" data-type="case">Кейсы</button>
-        <button class="tab" data-type="article">Статьи</button>
-        <button class="tab" data-type="page">Страницы и SEO</button>
       </nav>
       <div class="content-layout">
         <section class="list-panel">
@@ -62,6 +58,22 @@
               <label>Адрес (slug)<input id="item-slug" required maxlength="100" placeholder="otzyv-anton-s"></label>
             </div>
             <label>Статус<select id="item-status"><option value="draft">Черновик</option><option value="published">Опубликован</option><option value="archived">В архиве</option></select></label>
+            <div id="review-fields" class="object-fields" hidden>
+              <div class="section-intro"><strong>Карточка отзыва</strong><span>Заполни сведения, которые будут отображаться в отзыве на сайте.</span></div>
+              <div class="field-grid">
+                <label>Имя клиента<input id="review-author" maxlength="120" placeholder="Например, Антон С."></label>
+                <label>Дата отзыва<input id="review-date" type="date"></label>
+                <label>Оценка
+                  <select id="review-rating">
+                    <option value="5">5 звёзд</option><option value="4">4 звезды</option><option value="3">3 звезды</option><option value="2">2 звезды</option><option value="1">1 звезда</option>
+                  </select>
+                </label>
+                <label>Источник отзыва<input id="review-source" maxlength="80" placeholder="Яндекс.Карты, 2ГИС и т. п."></label>
+              </div>
+              <label>Текст отзыва<textarea id="review-text" rows="8" placeholder="Вставь полный текст отзыва"></textarea></label>
+              <label>Ссылка на оригинал<input id="review-url" type="url" placeholder="https://..."></label>
+              <label>Ссылка на фотографию клиента (необязательно)<input id="review-photo" type="url" placeholder="https://..."></label>
+            </div>
             <div id="object-fields" class="object-fields" hidden>
               <div class="section-intro"><strong>Карточка объекта</strong><span>Заполни основные сведения об объекте недвижимости.</span></div>
               <div class="field-grid">
@@ -75,10 +87,6 @@
                 <textarea id="object-images" rows="4" placeholder="Вставь ссылки на изображения — по одной ссылке на строку"></textarea>
               </label>
               <p class="hint">Пока принимаются прямые ссылки на изображения. Загрузку файлов с компьютера добавим отдельным этапом.</p>
-              <label>Связанные кейсы
-                <select id="object-cases" multiple size="5" aria-label="Выбрать связанные кейсы"></select>
-              </label>
-              <p class="hint">Удерживай Ctrl (Windows) или Command (Mac), чтобы выбрать несколько кейсов.</p>
             </div>
             <div id="payload-json-field">
               <label>Содержимое (JSON)<textarea id="item-payload" spellcheck="false" rows="16">{}</textarea></label>
