@@ -50,25 +50,36 @@ create trigger content_items_updated_at
 before update on public.content_items
 for each row execute function public.set_updated_at();
 
+-- SECURITY DEFINER prevents recursive RLS when policies read the caller's role.
 create or replace function public.current_user_role()
 returns text
 language sql
 stable
 security definer
-set search_path = public
-as $$
-  select role from public.profiles where user_id = auth.uid()
-$$;
+set search_path = ''
+set row_security = off
+as $
+  select p.role
+  from public.profiles as p
+  where p.user_id = auth.uid()
+$;
+
+revoke all on function public.current_user_role() from public;
+grant execute on function public.current_user_role() to authenticated;
 
 create or replace function public.can_edit_content()
 returns boolean
 language sql
 stable
 security definer
-set search_path = public
-as $$
+set search_path = ''
+set row_security = off
+as $
   select coalesce(public.current_user_role() = 'admin', false)
-$$;
+$;
+
+revoke all on function public.can_edit_content() from public;
+grant execute on function public.can_edit_content() to anon, authenticated;
 
 alter table public.profiles enable row level security;
 alter table public.content_items enable row level security;
