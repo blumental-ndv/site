@@ -148,7 +148,7 @@ async function configureEditor(payload = {}, fallbackTitle = "") {
   $("object-developer").value = payload.developer || "";
   $("object-address").value = payload.address || "";
   $("object-description").value = payload.description || "";
-  $("object-images").value = Array.isArray(payload.images) ? payload.images.join("\\n") : "";
+  $("object-images").value = Array.isArray(payload.images) ? payload.images.join("\n") : "";
 }
 function readPayload() {
   let payload;
