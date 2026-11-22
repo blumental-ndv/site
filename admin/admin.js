@@ -107,7 +107,7 @@ function newItem() {
 }
 function defaultPayload(type) {
   const examples = {
-    review: { text: "", author: "", date: "", source_url: "", rating: 5, page_ids: [], object_ids: [], case_ids: [] },
+    review: { text: "", author: "", date: "", source: "", source_url: "", rating: 5, photo_url: "" },
     object: { name: "", city: "", developer: "", address: "", description: "", images: [], page_ids: [] },
     case: { object_id: null, property_type: "", area_m2: null, deal_date: "", price: null, payment_terms: "", description: "", images: [], review_ids: [] },
     article: { excerpt: "", body: "", cover_image: "", seo_title: "", seo_description: "", page_ids: [] },
@@ -117,48 +117,45 @@ function defaultPayload(type) {
 }
 
 async function configureEditor(payload = {}, fallbackTitle = "") {
+  const isReview = currentType === "review";
   const isObject = currentType === "object";
+  show("review-fields", isReview);
   show("object-fields", isObject);
-  show("payload-json-field", !isObject);
-  if (!isObject) return;
-
-  const casesSelect = $("object-cases");
-  casesSelect.innerHTML = '<option disabled>Загружаем кейсы…</option>';
-  const { data: cases, error: casesError } = await supabaseClient.from("content_items")
-    .select("id,title,status").eq("type", "case").order("title");
-  if (casesError) {
-    casesSelect.innerHTML = '<option disabled>Не удалось загрузить кейсы</option>';
-    console.error(casesError);
-  } else {
-    casesSelect.innerHTML = (cases || []).map(item =>
-      '<option value="' + escapeHtml(item.id) + '">' + escapeHtml(item.title) + ' — ' + escapeHtml(statusName(item.status)) + '</option>'
-    ).join("");
-    const objectId = $("item-id").value;
-    if (objectId) {
-      const { data: links, error: linksError } = await supabaseClient.from("content_relations")
-        .select("target_id").eq("source_id", objectId).eq("relation_type", "object_case");
-      if (linksError) console.error(linksError);
-      const linkedIds = new Set((links || []).map(link => link.target_id));
-      [...casesSelect.options].forEach(option => { option.selected = linkedIds.has(option.value); });
-    }
+  show("payload-json-field", !isReview && !isObject);
+  if (isReview) {
+    $("review-author").value = payload.author || "";
+    $("review-date").value = payload.date || "";
+    $("review-rating").value = String(payload.rating || 5);
+    $("review-source").value = payload.source || "";
+    $("review-text").value = payload.text || "";
+    $("review-url").value = payload.source_url || "";
+    $("review-photo").value = payload.photo_url || "";
   }
-
-  $("object-name").value = payload.name || fallbackTitle || "";
-  $("object-city").value = payload.city || "";
-  $("object-developer").value = payload.developer || "";
-  $("object-address").value = payload.address || "";
-  $("object-description").value = payload.description || "";
-  $("object-images").value = Array.isArray(payload.images) ? payload.images.join("\n") : "";
+  if (isObject) {
+    $("object-name").value = payload.name || fallbackTitle || "";
+    $("object-city").value = payload.city || "";
+    $("object-developer").value = payload.developer || "";
+    $("object-address").value = payload.address || "";
+    $("object-description").value = payload.description || "";
+    $("object-images").value = Array.isArray(payload.images) ? payload.images.join("\n") : "";
+  }
 }
 function readPayload() {
   let payload;
-  try {
-    payload = JSON.parse($("item-payload").value || "{}");
-  } catch (error) {
-    throw new Error("Ошибка JSON: " + error.message);
+  try { payload = JSON.parse($("item-payload").value || "{}"); }
+  catch (error) { throw new Error("Ошибка JSON: " + error.message); }
+  payload = payload && typeof payload === "object" && !Array.isArray(payload) ? payload : {};
+  if (currentType === "review") {
+    payload.author = $("review-author").value.trim();
+    payload.date = $("review-date").value;
+    payload.rating = Number($("review-rating").value);
+    payload.source = $("review-source").value.trim();
+    payload.text = $("review-text").value.trim();
+    payload.source_url = $("review-url").value.trim();
+    payload.photo_url = $("review-photo").value.trim();
+    if (!payload.author || !payload.text) throw new Error("Укажи имя клиента и текст отзыва.");
   }
   if (currentType === "object") {
-    payload = payload && typeof payload === "object" && !Array.isArray(payload) ? payload : {};
     payload.name = $("object-name").value.trim() || $("item-title").value.trim();
     payload.city = $("object-city").value.trim();
     payload.developer = $("object-developer").value.trim();
@@ -168,7 +165,6 @@ function readPayload() {
   }
   return payload;
 }
-
 $("object-name").addEventListener("input", () => {
   const name = $("object-name").value;
   $("item-title").value = name;
@@ -221,17 +217,6 @@ $("editor-form").addEventListener("submit", async (event) => {
   const { data, error } = await query.select("id").single();
   if (error) return message("save-message", error.message, true);
   selectedId = data.id;
-  if (currentType === "object") {
-    const selectedCaseIds = [...$("object-cases").selectedOptions].map(option => option.value);
-    const { error: deleteRelationsError } = await supabaseClient.from("content_relations")
-      .delete().eq("source_id", selectedId).eq("relation_type", "object_case");
-    if (deleteRelationsError) return message("save-message", "Объект сохранён, но старые связи не удалось обновить: " + deleteRelationsError.message, true);
-    if (selectedCaseIds.length) {
-      const rows = selectedCaseIds.map(target_id => ({source_id:selectedId,target_id,relation_type:"object_case"}));
-      const { error: insertRelationsError } = await supabaseClient.from("content_relations").insert(rows);
-      if (insertRelationsError) return message("save-message", "Объект сохранён, но кейсы не связаны: " + insertRelationsError.message, true);
-    }
-  }
   message("save-message", "Сохранено.");
   await openItem(selectedId);
 });
