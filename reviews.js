@@ -68,7 +68,7 @@
     cards.forEach(card => {
       if (!card.dataset.year) {
         const meta = card.querySelector(".review-meta")?.textContent || "";
-        const match = meta.match(/\\b(20\\d{2})\\b/);
+        const match = meta.match(/\b(20\d{2})\b/);
         card.dataset.year = match ? match[1] : "Без даты";
       }
     });
