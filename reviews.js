@@ -1,0 +1,106 @@
+// Публичный вывод опубликованных отзывов из Supabase.
+(() => {
+  const SUPABASE_URL = "https://kdakrpgzeufyfjlzfzcn.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_XkFCo4UH2nsA0Ex1wCKjGA_1tclbctl";
+
+  function formatDate(value) {
+    if (!value) return "";
+    const date = new Date(/^\d{4}-\d{2}-\d{2}$/.test(value) ? value + "T00:00:00" : value);
+    if (Number.isNaN(date.getTime())) return value;
+    return new Intl.DateTimeFormat("ru-RU", {
+      day: "numeric", month: "long", year: "numeric"
+    }).format(date);
+  }
+
+  function createReviewCard(payload) {
+    const card = document.createElement("article");
+    card.className = "review-card";
+
+    const content = document.createElement("div");
+    const stars = document.createElement("div");
+    stars.className = "review-stars";
+    const rating = Math.max(1, Math.min(5, Number(payload.rating) || 5));
+    stars.textContent = "★".repeat(rating) + "☆".repeat(5 - rating);
+
+    const quote = document.createElement("p");
+    quote.className = "review-text";
+    quote.textContent = payload.text || "";
+    content.append(stars, quote);
+
+    const details = document.createElement("div");
+    const author = document.createElement("strong");
+    author.className = "review-author";
+    author.textContent = payload.author || "Клиент";
+
+    const meta = document.createElement("span");
+    meta.className = "review-meta";
+    const date = formatDate(payload.date);
+    meta.textContent = [payload.source || "Клиент", date].filter(Boolean).join(", ");
+
+    details.append(author, meta);
+    if (payload.source_url) {
+      try {
+        const url = new URL(payload.source_url);
+        if (url.protocol === "https:" || url.protocol === "http:") {
+          const link = document.createElement("a");
+          link.className = "review-link";
+          link.href = url.href;
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+          link.textContent = payload.source ? "Проверить на " + payload.source + " →" : "Источник отзыва →";
+          details.append(link);
+        }
+      } catch (_) { /* Некорректную ссылку не выводим. */ }
+    }
+
+    card.append(content, details);
+    return card;
+  }
+
+  async function loadReviews() {
+    const fullList = document.querySelector(".all-reviews-grid");
+    const homeList = document.querySelector(".reviews-grid");
+    if (!fullList && !homeList) return;
+    if (!window.supabase) {
+      console.error("Supabase JS не загрузился; оставляем резервные отзывы из HTML.");
+      return;
+    }
+
+    try {
+      const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+      const { data, error } = await client.from("content_items")
+        .select("payload")
+        .eq("type", "review")
+        .eq("status", "published");
+      if (error) throw error;
+
+      const reviews = (data || [])
+        .map(row => row.payload || {})
+        .filter(item => item.text && item.author)
+        .sort((a, b) => String(b.date || "").localeCompare(String(a.date || "")));
+
+      if (fullList) {
+        fullList.replaceChildren(...reviews.map(createReviewCard));
+        if (!reviews.length) {
+          const empty = document.createElement("p");
+          empty.className = "review-meta";
+          empty.textContent = "Пока нет опубликованных отзывов.";
+          fullList.append(empty);
+        }
+      }
+
+      if (homeList) {
+        const featured = reviews.slice(0, 3);
+        if (featured.length) homeList.replaceChildren(...featured.map(createReviewCard));
+      }
+    } catch (error) {
+      console.error("Не удалось загрузить отзывы из Supabase; показываем сохранённую HTML-версию.", error);
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", loadReviews, { once: true });
+  } else {
+    loadReviews();
+  }
+})();
