@@ -1265,3 +1265,7 @@ footer {
         font-size: 0.85rem;
     }
 }
+
+
+/* Фото автора отзыва */
+.review-photo { display:block; width:88px; height:88px; object-fit:cover; border-radius:50%; margin:0 0 16px; border:1px solid var(--card-border); }
