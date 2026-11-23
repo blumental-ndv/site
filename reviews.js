@@ -15,7 +15,7 @@
   function createReviewCard(payload) {
     const card = document.createElement("article");
     card.className = "review-card";
-    const parsedDate = payload.date ? new Date(/^\\d{4}-\\d{2}-\\d{2}$/.test(payload.date) ? payload.date + "T00:00:00" : payload.date) : null;
+    const parsedDate = payload.date ? new Date(/^\d{4}-\d{2}-\d{2}$/.test(payload.date) ? payload.date + "T00:00:00" : payload.date) : null;
     card.dataset.year = parsedDate && !Number.isNaN(parsedDate.getTime()) ? String(parsedDate.getFullYear()) : "Без даты";
 
     const content = document.createElement("div");
