@@ -1,0 +1,127 @@
+name: Sync published reviews to JSON
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: reviews-sync-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+
+      - name: Build reviews.json from published Supabase reviews
+        env:
+          SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ vars.SUPABASE_ANON_KEY }}
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+
+          async function main() {
+            const base = process.env.SUPABASE_URL?.replace(/\\/$/, '');
+            const key = process.env.SUPABASE_ANON_KEY;
+            if (!base || !key) {
+              throw new Error('Add repository variables SUPABASE_URL and SUPABASE_ANON_KEY in GitHub Settings → Secrets and variables → Actions → Variables.');
+            }
+
+            const url = new URL(base + '/rest/v1/content_items');
+            url.search = new URLSearchParams({
+              select: 'title,payload,updated_at',
+              type: 'eq.review',
+              status: 'eq.published',
+              order: 'updated_at.desc',
+              limit: '1000'
+            }).toString();
+
+            const response = await fetch(url, {
+              headers: {
+                apikey: key,
+                Authorization: 'Bearer ' + key
+              }
+            });
+            if (!response.ok) {
+              throw new Error('Supabase request failed: ' + response.status + ' ' + await response.text());
+            }
+
+            const rows = await response.json();
+            const months = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+            function displayDate(value, fallback) {
+              const raw = String(value || '').trim();
+              const iso = raw.match(/^(\\d{4})-(\\d{2})-(\\d{2})/);
+              if (iso) return Number(iso[3]) + ' ' + months[Number(iso[2]) - 1] + ' ' + iso[1];
+              if (raw) return raw;
+              if (fallback) {
+                const d = new Date(fallback);
+                if (!Number.isNaN(d.getTime())) return d.getUTCDate() + ' ' + months[d.getUTCMonth()] + ' ' + d.getUTCFullYear();
+              }
+              return '';
+            }
+
+            const reviews = rows
+              .map(row => {
+                const p = row.payload || {};
+                return {
+                  author: String(p.author || '').trim(),
+                  date: displayDate(p.date, row.updated_at),
+                  text: String(p.text || '').trim(),
+                  source: String(p.source || '').trim(),
+                  source_url: String(p.source_url || '').trim(),
+                  rating: Math.max(1, Math.min(5, Number(p.rating) || 5))
+                };
+              })
+              .filter(review => review.author && review.text);
+
+            function dateKey(value) {
+              const m = String(value || '').match(/^(\\d{1,2})\\s+(января|февраля|марта|апреля|мая|июня|июля|августа|сентября|октября|ноября|декабря)\\s+(\\d{4})$/i);
+              return m ? Number(m[3]) * 10000 + (months.indexOf(m[2].toLowerCase()) + 1) * 100 + Number(m[1]) : 0;
+            }
+            reviews.sort((a, b) => dateKey(b.date) - dateKey(a.date));
+            fs.writeFileSync('reviews.json', JSON.stringify(reviews, null, 2) + '\\n', 'utf8');
+            console.log('Prepared ' + reviews.length + ' published reviews.');
+          }
+
+          main().catch(error => { console.error(error); process.exit(1); });
+          NODE
+
+      - name: Commit updated reviews.json
+        id: commit
+        run: |
+          if git diff --quiet -- reviews.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "reviews.json is already up to date."
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add reviews.json
+            git commit -m "Sync published reviews from Supabase"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Configure GitHub Pages
+        if: steps.commit.outputs.changed == 'true' && github.ref == 'refs/heads/main'
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        if: steps.commit.outputs.changed == 'true' && github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - name: Deploy updated site to GitHub Pages
+        if: steps.commit.outputs.changed == 'true' && github.ref == 'refs/heads/main'
+        uses: actions/deploy-pages@v5
