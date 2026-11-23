@@ -15,6 +15,8 @@
   function createReviewCard(payload) {
     const card = document.createElement("article");
     card.className = "review-card";
+    const parsedDate = payload.date ? new Date(/^\\d{4}-\\d{2}-\\d{2}$/.test(payload.date) ? payload.date + "T00:00:00" : payload.date) : null;
+    card.dataset.year = parsedDate && !Number.isNaN(parsedDate.getTime()) ? String(parsedDate.getFullYear()) : "Без даты";
 
     const content = document.createElement("div");
     const stars = document.createElement("div");
@@ -80,12 +82,49 @@
         .sort((a, b) => String(b.date || "").localeCompare(String(a.date || "")));
 
       if (fullList) {
-        fullList.replaceChildren(...reviews.map(createReviewCard));
+        const cards = reviews.map(createReviewCard);
+        fullList.replaceChildren(...cards);
         if (!reviews.length) {
           const empty = document.createElement("p");
           empty.className = "review-meta";
           empty.textContent = "Пока нет опубликованных отзывов.";
           fullList.append(empty);
+        } else {
+          let yearNav = document.querySelector(".reviews-year-nav");
+          if (!yearNav) {
+            yearNav = document.createElement("nav");
+            yearNav.className = "reviews-year-nav";
+            yearNav.setAttribute("aria-label", "Навигация по годам отзывов");
+            fullList.parentNode.insertBefore(yearNav, fullList);
+          }
+
+          const years = [...new Set(cards.map(card => card.dataset.year))]
+            .sort((a, b) => {
+              if (a === "Без даты") return 1;
+              if (b === "Без даты") return -1;
+              return Number(b) - Number(a);
+            });
+
+          const filters = ["Все", ...years];
+          yearNav.replaceChildren(...filters.map((year, index) => {
+            const link = document.createElement("a");
+            link.href = "#";
+            link.className = "reviews-year-link" + (index === 0 ? " active" : "");
+            link.textContent = year === "Все" ? "Все годы" : year;
+            link.setAttribute("aria-current", index === 0 ? "true" : "false");
+            link.addEventListener("click", event => {
+              event.preventDefault();
+              cards.forEach(card => {
+                card.hidden = year !== "Все" && card.dataset.year !== year;
+              });
+              yearNav.querySelectorAll(".reviews-year-link").forEach(item => {
+                const active = item === link;
+                item.classList.toggle("active", active);
+                item.setAttribute("aria-current", active ? "true" : "false");
+              });
+            });
+            return link;
+          }));
         }
       }
 
