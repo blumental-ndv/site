@@ -89,7 +89,7 @@ jobs:
               })
               .filter(review => review.author && review.text);
 
-            function dateKey(value) {
+            if (reviews.length === 0) {\n              throw new Error('No valid published reviews were returned; keeping the existing reviews.json unchanged.');\n            }\n\n            function dateKey(value) {
               const m = String(value || '').match(/^(\d{1,2})\s+(января|февраля|марта|апреля|мая|июня|июля|августа|сентября|октября|ноября|декабря)\s+(\d{4})$/i);
               return m ? Number(m[3]) * 10000 + (months.indexOf(m[2].toLowerCase()) + 1) * 100 + Number(m[1]) : 0;
             }
