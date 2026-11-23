@@ -107,7 +107,7 @@ function newItem() {
 }
 function defaultPayload(type) {
   const examples = {
-    review: { text: "", author: "", date: "", source: "", source_url: "", rating: 5, photo_url: "" },
+    review: { text: "", author: "", date: "", source: "", source_url: "", rating: 5 },
     object: { name: "", city: "", developer: "", address: "", description: "", images: [], page_ids: [] },
     case: { object_id: null, property_type: "", area_m2: null, deal_date: "", price: null, payment_terms: "", description: "", images: [], review_ids: [] },
     article: { excerpt: "", body: "", cover_image: "", seo_title: "", seo_description: "", page_ids: [] },
@@ -129,7 +129,7 @@ async function configureEditor(payload = {}, fallbackTitle = "") {
     $("review-source").value = payload.source || "";
     $("review-text").value = payload.text || "";
     $("review-url").value = payload.source_url || "";
-    $("review-photo").value = payload.photo_url || "";
+
   }
   if (isObject) {
     $("object-name").value = payload.name || fallbackTitle || "";
@@ -152,7 +152,7 @@ function readPayload() {
     payload.source = $("review-source").value.trim();
     payload.text = $("review-text").value.trim();
     payload.source_url = $("review-url").value.trim();
-    payload.photo_url = $("review-photo").value.trim();
+
     if (!payload.author || !payload.text) throw new Error("Укажи имя клиента и текст отзыва.");
   }
   if (currentType === "object") {
