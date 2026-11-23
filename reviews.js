@@ -125,10 +125,15 @@
 
     try {
       const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-      const { data, error } = await client.from("content_items")
+      let query = client.from("content_items")
         .select("payload")
         .eq("type", "review")
         .eq("status", "published");
+
+      // Главной странице нужны только три отзыва; полный архив загружаем только на странице отзывов.
+      if (!fullList && homeList) query = query.limit(3);
+
+      const { data, error } = await query;
       if (error) throw error;
 
       const reviews = (data || [])
