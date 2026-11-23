@@ -11,7 +11,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: reviews-sync-\${{ github.ref }}
+  group: reviews-sync-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
@@ -19,17 +19,17 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: \${{ steps.deployment.outputs.page_url }}
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          ref: \${{ github.ref }}
+          ref: ${{ github.ref }}
 
       - name: Build reviews.json from published Supabase reviews
         env:
-          SUPABASE_URL: \${{ vars.SUPABASE_URL }}
-          SUPABASE_ANON_KEY: \${{ vars.SUPABASE_ANON_KEY }}
+          SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ vars.SUPABASE_ANON_KEY }}
         run: |
           node <<'NODE'
           const fs = require('node:fs');
@@ -89,7 +89,9 @@ jobs:
               })
               .filter(review => review.author && review.text);
 
-            if (reviews.length === 0) {\n              throw new Error('No valid published reviews were returned; keeping the existing reviews.json unchanged.');\n            }\n\n            function dateKey(value) {
+            if (reviews.length === 0) {
+              throw new Error('No valid published reviews were returned; keeping the existing reviews.json unchanged.');
+            }\n\n            function dateKey(value) {
               const m = String(value || '').match(/^(\d{1,2})\s+(января|февраля|марта|апреля|мая|июня|июля|августа|сентября|октября|ноября|декабря)\s+(\d{4})$/i);
               return m ? Number(m[3]) * 10000 + (months.indexOf(m[2].toLowerCase()) + 1) * 100 + Number(m[1]) : 0;
             }
