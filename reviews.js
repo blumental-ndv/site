@@ -55,21 +55,6 @@
       } catch (_) { /* Некорректную ссылку не выводим. */ }
     }
 
-    if (payload.photo_url) {
-      try {
-        const photoUrl = new URL(payload.photo_url);
-        if (photoUrl.protocol === "https:" || photoUrl.protocol === "http:") {
-          const photo = document.createElement("img");
-          photo.className = "review-photo";
-          photo.src = photoUrl.href;
-          photo.alt = "Фото клиента " + (payload.author || "");
-          photo.loading = "lazy";
-          photo.referrerPolicy = "no-referrer";
-          photo.onerror = () => photo.remove();
-          card.append(photo);
-        }
-      } catch (_) { /* Некорректную ссылку на фото не выводим. */ }
-    }
     card.append(content, details);
     return card;
   }
@@ -128,6 +113,10 @@
     const fullList = document.querySelector(".all-reviews-grid");
     const homeList = document.querySelector(".reviews-grid");
     if (!fullList && !homeList) return;
+    if (fullList) buildYearNavigation(fullList);
+    const loading = document.createElement('p'); loading.className = 'review-meta'; loading.textContent = 'Загружаем отзывы…';
+    if (fullList) fullList.replaceChildren(loading.cloneNode(true));
+    if (homeList) homeList.replaceChildren(loading.cloneNode(true));
     if (!window.supabase) {
       console.error("Supabase JS не загрузился; оставляем резервные отзывы из HTML.");
       buildYearNavigation(fullList);
@@ -165,7 +154,8 @@
         if (featured.length) homeList.replaceChildren(...featured.map(createReviewCard));
       }
     } catch (error) {
-      console.error("Не удалось загрузить отзывы из Supabase; показываем сохранённую HTML-версию.", error);
+      console.error("Не удалось загрузить отзывы из Supabase.", error);
+      if (fullList) fullList.textContent = "Отзывы временно не удалось загрузить."; if (homeList) homeList.textContent = "Отзывы временно не удалось загрузить.";
       buildYearNavigation(fullList);
     }
   }
