@@ -59,12 +59,63 @@
     return card;
   }
 
+
+  function buildYearNavigation(fullList) {
+    if (!fullList) return;
+    const cards = [...fullList.querySelectorAll(".review-card")];
+    if (!cards.length) return;
+
+    cards.forEach(card => {
+      if (!card.dataset.year) {
+        const meta = card.querySelector(".review-meta")?.textContent || "";
+        const match = meta.match(/\\b(20\\d{2})\\b/);
+        card.dataset.year = match ? match[1] : "Без даты";
+      }
+    });
+
+    let yearNav = document.querySelector(".reviews-year-nav");
+    if (!yearNav) {
+      yearNav = document.createElement("nav");
+      yearNav.className = "reviews-year-nav";
+      yearNav.setAttribute("aria-label", "Навигация по годам отзывов");
+      fullList.parentNode.insertBefore(yearNav, fullList);
+    }
+
+    const years = [...new Set(cards.map(card => card.dataset.year))].sort((a, b) => {
+      if (a === "Без даты") return 1;
+      if (b === "Без даты") return -1;
+      return Number(b) - Number(a);
+    });
+
+    const filters = ["Все", ...years];
+    yearNav.replaceChildren(...filters.map((year, index) => {
+      const link = document.createElement("a");
+      link.href = "#";
+      link.className = "reviews-year-link" + (index === 0 ? " active" : "");
+      link.textContent = year === "Все" ? "Все годы" : year;
+      link.setAttribute("aria-current", index === 0 ? "true" : "false");
+      link.addEventListener("click", event => {
+        event.preventDefault();
+        cards.forEach(card => {
+          card.hidden = year !== "Все" && card.dataset.year !== year;
+        });
+        yearNav.querySelectorAll(".reviews-year-link").forEach(item => {
+          const active = item === link;
+          item.classList.toggle("active", active);
+          item.setAttribute("aria-current", active ? "true" : "false");
+        });
+      });
+      return link;
+    }));
+  }
+
   async function loadReviews() {
     const fullList = document.querySelector(".all-reviews-grid");
     const homeList = document.querySelector(".reviews-grid");
     if (!fullList && !homeList) return;
     if (!window.supabase) {
       console.error("Supabase JS не загрузился; оставляем резервные отзывы из HTML.");
+      buildYearNavigation(fullList);
       return;
     }
 
@@ -90,41 +141,7 @@
           empty.textContent = "Пока нет опубликованных отзывов.";
           fullList.append(empty);
         } else {
-          let yearNav = document.querySelector(".reviews-year-nav");
-          if (!yearNav) {
-            yearNav = document.createElement("nav");
-            yearNav.className = "reviews-year-nav";
-            yearNav.setAttribute("aria-label", "Навигация по годам отзывов");
-            fullList.parentNode.insertBefore(yearNav, fullList);
-          }
-
-          const years = [...new Set(cards.map(card => card.dataset.year))]
-            .sort((a, b) => {
-              if (a === "Без даты") return 1;
-              if (b === "Без даты") return -1;
-              return Number(b) - Number(a);
-            });
-
-          const filters = ["Все", ...years];
-          yearNav.replaceChildren(...filters.map((year, index) => {
-            const link = document.createElement("a");
-            link.href = "#";
-            link.className = "reviews-year-link" + (index === 0 ? " active" : "");
-            link.textContent = year === "Все" ? "Все годы" : year;
-            link.setAttribute("aria-current", index === 0 ? "true" : "false");
-            link.addEventListener("click", event => {
-              event.preventDefault();
-              cards.forEach(card => {
-                card.hidden = year !== "Все" && card.dataset.year !== year;
-              });
-              yearNav.querySelectorAll(".reviews-year-link").forEach(item => {
-                const active = item === link;
-                item.classList.toggle("active", active);
-                item.setAttribute("aria-current", active ? "true" : "false");
-              });
-            });
-            return link;
-          }));
+          buildYearNavigation(fullList);
         }
       }
 
@@ -134,6 +151,7 @@
       }
     } catch (error) {
       console.error("Не удалось загрузить отзывы из Supabase; показываем сохранённую HTML-версию.", error);
+      buildYearNavigation(fullList);
     }
   }
 
