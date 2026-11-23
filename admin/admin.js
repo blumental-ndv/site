@@ -56,7 +56,7 @@ async function loadItems() {
     .select("id,type,slug,title,status,updated_at").eq("type", currentType)
     .order("updated_at", { ascending: false });
   if (error) {
-    $("items-list").innerHTML = '<div class="empty">Не удалось загрузить данные. Проверь SQL-схему и права доступа.</div>';
+    $("items-list").innerHTML = '<div class="empty">Не удалось загрузить данные: '+escapeHtml(error.message || error.code || "неизвестная ошибка")+'</div>';
     console.error(error);
     return;
   }
