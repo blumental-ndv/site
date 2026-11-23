@@ -55,6 +55,21 @@
       } catch (_) { /* Некорректную ссылку не выводим. */ }
     }
 
+    if (payload.photo_url) {
+      try {
+        const photoUrl = new URL(payload.photo_url);
+        if (photoUrl.protocol === "https:" || photoUrl.protocol === "http:") {
+          const photo = document.createElement("img");
+          photo.className = "review-photo";
+          photo.src = photoUrl.href;
+          photo.alt = "Фото клиента " + (payload.author || "");
+          photo.loading = "lazy";
+          photo.referrerPolicy = "no-referrer";
+          photo.onerror = () => photo.remove();
+          card.append(photo);
+        }
+      } catch (_) { /* Некорректную ссылку на фото не выводим. */ }
+    }
     card.append(content, details);
     return card;
   }
