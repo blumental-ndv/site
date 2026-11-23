@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Админ-панель — Блюменталь</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <div class="ambient"></div>
+  <main class="shell">
+    <header class="topbar">
+      <a class="brand" href="../index.html"><span class="brand-mark">Б</span><span>Блюменталь<small>Управление сайтом</small></span></a>
+      <div class="top-actions"><span id="user-label" class="user-label"></span><button id="logout" class="button button-ghost" hidden>Выйти</button></div>
+    </header>
+
+    <section id="setup-notice" class="notice" hidden>
+      <strong>Нужно подключить Supabase</strong>
+      <p>Админка уже подготовлена, но для входа и сохранения данных нужны адрес проекта и публичный ключ Supabase. Добавим их в файл <code>admin/admin.js</code> после создания проекта. Секретный service-role key сюда добавлять нельзя.</p>
+    </section>
+
+    <section id="login-view" class="login-card" hidden>
+      <div class="eyebrow">ЗАКРЫТЫЙ РАЗДЕЛ</div>
+      <h1>Вход в админ-панель</h1>
+      <p class="muted">Войди по email. Доступ выдаётся владельцем сайта.</p>
+      <form id="login-form">
+        <label for="email">Email</label>
+        <input id="email" type="email" autocomplete="email" placeholder="name@example.com" required>
+        <button class="button button-primary" type="submit">Получить ссылку для входа</button>
+        <p id="login-message" class="form-message" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <section id="app-view" hidden>
+      <div class="welcome">
+        <div><div class="eyebrow">ПАНЕЛЬ УПРАВЛЕНИЯ</div><h1>Контент сайта</h1><p class="muted">Редактируй материалы в одном месте и связывай их между собой.</p></div>
+        <button id="new-item" class="button button-primary">＋ Добавить материал</button>
+      </div>
+      <nav id="type-tabs" class="tabs" aria-label="Типы материалов">
+        <button class="tab active" data-type="review">Отзывы</button>
+      </nav>
+      <div class="content-layout">
+        <section class="list-panel">
+          <div class="list-heading"><h2 id="list-title">Отзывы</h2><span id="item-count" class="count">0</span></div>
+          <div id="items-list" class="items-list"><div class="empty">Загружаем материалы…</div></div>
+        </section>
+        <section class="editor-panel">
+          <div id="editor-empty" class="editor-empty"><div class="empty-icon">✦</div><h2>Выбери материал</h2><p>Или создай новый — он появится здесь для редактирования.</p></div>
+          <form id="editor-form" hidden>
+            <div class="editor-heading"><div><div class="eyebrow">РЕДАКТОР</div><h2 id="editor-title">Новый материал</h2></div><span id="status-pill" class="status-pill">Черновик</span></div>
+            <input id="item-id" type="hidden">
+            <div class="field-grid">
+              <label>Заголовок<input id="item-title" required maxlength="180" placeholder="Например, Отзыв клиента"></label>
+              <label>Адрес (slug)<input id="item-slug" required maxlength="100" placeholder="otzyv-anton-s"></label>
+            </div>
+            <label>Статус<select id="item-status"><option value="draft">Черновик</option><option value="published">Опубликован</option><option value="archived">В архиве</option></select></label>
+            <div id="review-fields" class="object-fields" hidden>
+              <div class="section-intro"><strong>Карточка отзыва</strong><span>Заполни сведения, которые будут отображаться в отзыве на сайте.</span></div>
+              <div class="field-grid">
+                <label>Имя клиента<input id="review-author" maxlength="120" placeholder="Например, Антон С."></label>
+                <label>Дата отзыва<input id="review-date" type="date"></label>
+                <label>Оценка
+                  <select id="review-rating">
+                    <option value="5">5 звёзд</option><option value="4">4 звезды</option><option value="3">3 звезды</option><option value="2">2 звезды</option><option value="1">1 звезда</option>
+                  </select>
+                </label>
+                <label>Источник отзыва<input id="review-source" maxlength="80" placeholder="Яндекс.Карты, 2ГИС и т. п."></label>
+              </div>
+              <label>Текст отзыва<textarea id="review-text" rows="8" placeholder="Вставь полный текст отзыва"></textarea></label>
+              <label>Ссылка на оригинал<input id="review-url" type="url" placeholder="https://..."></label>
+              <label>Ссылка на фотографию клиента (необязательно)<input id="review-photo" type="url" placeholder="https://..."></label>
+            </div>
+            <div id="object-fields" class="object-fields" hidden>
+              <div class="section-intro"><strong>Карточка объекта</strong><span>Заполни основные сведения об объекте недвижимости.</span></div>
+              <div class="field-grid">
+                <label>Название ЖК / объекта<input id="object-name" maxlength="180" placeholder="Например, ЖК Северный квартал"></label>
+                <label>Город<input id="object-city" maxlength="100" placeholder="Москва"></label>
+                <label>Застройщик<input id="object-developer" maxlength="180" placeholder="Название компании"></label>
+                <label>Адрес<input id="object-address" maxlength="240" placeholder="Улица, дом"></label>
+              </div>
+              <label>Описание<textarea id="object-description" rows="5" placeholder="Краткое описание объекта, особенности и преимущества"></textarea></label>
+              <label>Фотографии объекта
+                <textarea id="object-images" rows="4" placeholder="Вставь ссылки на изображения — по одной ссылке на строку"></textarea>
+              </label>
+              <p class="hint">Пока принимаются прямые ссылки на изображения. Загрузку файлов с компьютера добавим отдельным этапом.</p>
+            </div>
+            <div id="payload-json-field">
+              <label>Содержимое (JSON)<textarea id="item-payload" spellcheck="false" rows="16">{}</textarea></label>
+              <p class="hint">Дополнительные поля материала. Для раздела «ЖК и объекты» основные данные можно заполнять в визуальной форме выше.</p>
+            </div>
+            <div class="editor-actions"><button type="button" id="delete-item" class="button button-danger" hidden>Удалить</button><span class="spacer"></span><button type="button" id="cancel-edit" class="button button-ghost">Отмена</button><button type="submit" class="button button-primary">Сохранить</button></div>
+            <p id="save-message" class="form-message" aria-live="polite"></p>
+          </form>
+        </section>
+      </div>
+    </section>
+    <footer>Админ-панель · blumental-ndv.ru <span>Доступ только для приглашённых пользователей</span></footer>
+  </main>
+  <script src="admin.js"></script>
+</body>
+</html>
