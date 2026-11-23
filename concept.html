@@ -22,6 +22,22 @@
     .trust{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}.trust-image{height:410px;background:#d8d6cc;overflow:hidden}.trust-image img{width:100%;height:100%;object-fit:cover;object-position:center 30%;filter:grayscale(.25)}.trust-copy h2{font:500 clamp(38px,5vw,58px)/1.08 var(--serif);margin:18px 0}.trust-copy p{color:var(--muted);font-size:15px;line-height:1.9}.trust-points{list-style:none;padding:0;margin:25px 0}.trust-points li{padding:13px 0;border-bottom:1px solid var(--line);font-size:14px}.trust-points li:before{content:"↗";color:var(--olive);margin-right:13px}
     .reviews{background:#202722;color:#f4f1eb}.reviews .section-kicker{color:#c5cbb9}.reviews .section-head h2{color:#f4f1eb}.review-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.review{padding:30px;background:#2b332d;border:1px solid #ffffff18;min-height:220px;display:flex;flex-direction:column;justify-content:space-between}.stars{color:#d4bd8b;letter-spacing:.18em;font-size:13px}.review p{font:500 20px/1.5 var(--serif);margin:20px 0 28px;color:#f1eee6}.review small{font-size:11px;color:#bfc5b8;letter-spacing:.1em;text-transform:uppercase}.reviews-bottom{margin-top:30px}.reviews-bottom a{color:#e2d5b8;border-bottom:1px solid #9c987f;padding-bottom:5px;font-size:13px}
     .final-cta{padding:105px 0;text-align:center}.final-cta h2{font:500 clamp(42px,6vw,72px)/1.05 var(--serif);max-width:760px;margin:18px auto}.final-cta p{color:var(--muted);font-size:15px;margin:22px auto 30px}.footer{padding:26px 0;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:20px;font-size:11px;color:var(--muted)}
+
+    .contact-tools{display:flex;align-items:center;gap:12px}
+    .phone-reveal{border:1px solid var(--line);background:transparent;color:var(--ink);padding:10px 14px;font:600 12px var(--sans);cursor:pointer;white-space:nowrap}
+    .phone-reveal:hover{background:var(--ink);color:white}
+    .phone-number{display:none;font-size:12px;font-weight:600;white-space:nowrap}
+    .phone-number.visible{display:inline}
+    .hero-actions{flex-wrap:wrap}
+    .button.button-outline{background:transparent;color:var(--ink);border:1px solid var(--ink)}
+    .button.button-outline:hover{background:var(--ink);color:white}
+    .channel-links{display:flex;flex-wrap:wrap;gap:22px}
+    .channel-links a{font-size:12px;color:var(--muted);border-bottom:1px solid var(--line);padding-bottom:4px}
+    .channel-links a:hover{color:var(--olive);border-color:var(--olive)}
+    .footer{align-items:center;flex-wrap:wrap}
+    @media(max-width:800px){.contact-tools{gap:8px}.phone-reveal{padding:9px 10px;font-size:10px}.phone-number{font-size:11px}}
+    @media(max-width:480px){.contact-tools{gap:6px}.phone-reveal{padding:8px;font-size:9px}.phone-number.visible{position:absolute;top:64px;right:18px;background:var(--white);padding:8px 10px;box-shadow:0 5px 20px #20252218}}
+
     .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}.reveal.visible{opacity:1;transform:none}
     @media(max-width:800px){.topnav{display:none}.hero{grid-template-columns:1fr;gap:45px;padding:60px 0}.hero-photo{height:440px;width:85%;margin:0 auto 0 20px}.hero h1{font-size:clamp(56px,13vw,82px)}.proof-inner{grid-template-columns:1fr;gap:18px}.proof-item{border-right:0;border-bottom:1px solid #ffffff35;padding-bottom:16px}.proof-item:last-child{border:0;padding:0}.section-head,.statement-grid,.trust{grid-template-columns:1fr;gap:24px}.services{grid-template-columns:1fr 1fr}.service:nth-child(2){border-right:0}.service:nth-child(3),.service:nth-child(4){border-top:1px solid var(--line)}.trust-image{height:350px}.review-grid{grid-template-columns:1fr}section.content{padding:76px 0}.statement{padding:70px 0}.footer{flex-direction:column}}
     @media(max-width:480px){.wrap{width:min(100% - 36px,1160px)}.topbar{height:64px}.top-cta{padding:9px 12px;font-size:10px}.hero-photo{height:360px;width:88%}.hero-actions{align-items:flex-start;flex-direction:column;gap:18px}.services{grid-template-columns:1fr}.service{border-right:0;border-bottom:1px solid var(--line);margin:0;padding:23px 0}.service h3{margin:15px 0 8px}.service:last-child{border:0}.review{padding:24px}.review p{font-size:18px}}
@@ -33,7 +49,11 @@
     <nav class="topbar" aria-label="Основная навигация">
       <a class="brand" href="concept.html">БЛЮМЕНТАЛЬ / НЕДВИЖИМОСТЬ</a>
       <div class="topnav"><a href="#approach">Подход</a><a href="#about">Обо мне</a><a href="#reviews">Отзывы</a></div>
-      <a class="top-cta" href="https://t.me/olya_blume" target="_blank" rel="noopener">Обсудить задачу ↗</a>
+      <div class="contact-tools">
+        <button class="phone-reveal" id="phone-btn" type="button" aria-expanded="false">Показать телефон</button>
+        <a class="phone-number" id="phone-number" href="tel:+79112119347">+7 (911) 211-93-47</a>
+        <a class="top-cta" href="https://t.me/olya_blume" target="_blank" rel="noopener">Написать ↗</a>
+      </div>
     </nav>
     <header class="hero">
       <div class="hero-copy reveal">
@@ -41,7 +61,8 @@
         <h1>Найти не просто квартиру.<br><em>Своё место.</em></h1>
         <p class="lead">Помогаю выбрать новостройку с ясным пониманием условий, преимуществ и возможных компромиссов — от первого запроса до сделки.</p>
         <div class="hero-actions">
-          <a class="button" href="https://t.me/olya_blume" target="_blank" rel="noopener">Обсудить покупку квартиры ↗</a>
+          <a class="button" href="https://t.me/olya_blume" target="_blank" rel="noopener">Написать в Telegram ↗</a>
+          <a class="button button-outline" href="https://max.ru/u/f9LHodD0cOKD9Wfy5uiVw2rCFxE56XOKsM2zfkwny18IveR99Hzgg6xTbGc" target="_blank" rel="noopener">Написать в MAX ↗</a>
           <a class="text-link" href="cases.html">Посмотреть примеры сделок</a>
         </div>
       </div>
@@ -109,13 +130,30 @@
       <div class="eyebrow" style="justify-content:center">Первый шаг — разговор</div>
       <h2>Давайте подберём квартиру, в которой всё сложится</h2>
       <p>Расскажите, что вы ищете. Обсудим бюджет, сроки и подходящие варианты.</p>
-      <a class="button" href="https://t.me/olya_blume" target="_blank" rel="noopener">Написать Ольге в Telegram ↗</a>
+      <div class="hero-actions" style="justify-content:center">
+        <a class="button" href="https://t.me/olya_blume" target="_blank" rel="noopener">Написать в Telegram ↗</a>
+        <a class="button button-outline" href="https://max.ru/u/f9LHodD0cOKD9Wfy5uiVw2rCFxE56XOKsM2zfkwny18IveR99Hzgg6xTbGc" target="_blank" rel="noopener">Написать в MAX ↗</a>
+      </div>
     </section>
   </main>
 
-  <footer class="wrap footer"><span>© 2026 ИП Блюменталь Ольга Игоревна</span><span><a href="policy.html">Политика обработки персональных данных</a></span><span>Информация носит ознакомительный характер</span></footer>
+  <footer class="wrap footer">
+    <span>© 2026 ИП Блюменталь Ольга Игоревна</span>
+    <nav class="channel-links" aria-label="Каналы"><a href="https://t.me/blumental_ndv" target="_blank" rel="noopener">Telegram-канал ↗</a><a href="https://max.ru/channel_blumental_ndv" target="_blank" rel="noopener">Канал в MAX ↗</a></nav>
+    <span><a href="policy.html">Политика обработки персональных данных</a></span>
+    <span>Информация носит ознакомительный характер</span>
+  </footer>
   <script>
     (function(){
+      const phoneButton=document.getElementById('phone-btn');
+      const phoneNumber=document.getElementById('phone-number');
+      if(phoneButton&&phoneNumber){
+        phoneButton.addEventListener('click',()=>{
+          const shown=phoneNumber.classList.toggle('visible');
+          phoneButton.textContent=shown?'Скрыть телефон':'Показать телефон';
+          phoneButton.setAttribute('aria-expanded',String(shown));
+        });
+      }
       const items=document.querySelectorAll('.reveal');
       if(!('IntersectionObserver' in window)){items.forEach(el=>el.classList.add('visible'));return;}
       const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target);}}),{threshold:.12});
